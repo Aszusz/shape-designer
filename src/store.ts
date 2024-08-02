@@ -1,4 +1,4 @@
-import { initialState } from './types'
+import { initialState, Tool } from './types'
 import { create } from 'zustand'
 
 export const useStore = create(() => initialState)
@@ -10,4 +10,8 @@ export const setCanvasWidth = (canvasWidth: number) => {
 
 export const setCanvasHeight = (canvasHeight: number) => {
   useStore.setState({ canvasHeight })
+}
+
+export const setTool = (tool: Tool) => {
+  useStore.setState({ tool })
 }
