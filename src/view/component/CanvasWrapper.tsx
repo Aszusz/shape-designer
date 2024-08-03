@@ -1,5 +1,11 @@
 import useRelativeMouseEvents from '../hooks/useRelativeMouseEvents'
-import { setMousePosition, useStore } from '@/store'
+import {
+  onMouseDown,
+  onMouseMove,
+  onMouseUp,
+  previewSelector,
+  useStore
+} from '@/store'
 import { useRef } from 'react'
 
 const CanvasWrapper = () => {
@@ -7,13 +13,15 @@ const CanvasWrapper = () => {
   const height = useStore(c => c.canvasHeight)
   const canvasRef = useRef(null)
 
+  const preview = useStore(c => previewSelector(c))
+
   useRelativeMouseEvents(
     canvasRef,
     position => {
-      setMousePosition(position)
+      onMouseMove(position)
     },
-    pos => console.log('onMouseDown', pos),
-    pos => console.log('onMouseUp', pos)
+    pos => onMouseDown(pos),
+    () => onMouseUp()
   )
 
   console.log('CanvasWrapper render')
@@ -30,11 +38,23 @@ const CanvasWrapper = () => {
         }}
       >
         {/* Canvas */}
-        <div
+        <svg
           ref={canvasRef}
           className='col-start-2 row-start-2 bg-white'
           style={{ width: `${width}px`, height: `${height}px` }}
-        ></div>
+        >
+          {preview && (
+            <rect
+              x={preview.x}
+              y={preview.y}
+              width={preview.width}
+              height={preview.height}
+              fill='none'
+              stroke='black'
+              strokeWidth='1'
+            />
+          )}
+        </svg>
       </div>
     </div>
   )
