@@ -1,4 +1,4 @@
-import useTrackRelativeMousePosition from '../hooks/useTrackRelativeMousePosition'
+import useRelativeMouseEvents from '../hooks/useRelativeMouseEvents'
 import { setMousePosition, useStore } from '@/store'
 import { useRef } from 'react'
 
@@ -7,9 +7,14 @@ const CanvasWrapper = () => {
   const height = useStore(c => c.canvasHeight)
   const canvasRef = useRef(null)
 
-  useTrackRelativeMousePosition(canvasRef, position => {
-    setMousePosition(position)
-  })
+  useRelativeMouseEvents(
+    canvasRef,
+    position => {
+      setMousePosition(position)
+    },
+    pos => console.log('onMouseDown', pos),
+    pos => console.log('onMouseUp', pos)
+  )
 
   console.log('CanvasWrapper render')
 
