@@ -40,8 +40,8 @@ export const previewSelector = (state: State) => {
   const rectY = Math.min(startY, mouseY)
 
   // Calculate the width and height of the rectangle
-  const width = Math.abs(startX - mouseX)
-  const height = Math.abs(startY - mouseY)
+  const width = Math.abs(startX - mouseX) - 1
+  const height = Math.abs(startY - mouseY) - 1
 
   // Return the rectangle's properties
   return { x: rectX, y: rectY, width, height }

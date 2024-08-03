@@ -34,7 +34,8 @@ const CanvasWrapper = () => {
           minWidth: `100%`,
           minHeight: `100%`,
           width: `${width}px`,
-          height: `${height}px`
+          height: `${height}px`,
+          shapeRendering: 'crispEdges'
         }}
       >
         {/* Canvas */}
