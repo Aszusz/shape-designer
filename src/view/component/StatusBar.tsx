@@ -1,9 +1,8 @@
-import useMousePosition from '../hooks/useMousePosition'
 import { useStore } from '@/store'
 
 const StatusBar = () => {
   const tool = useStore(state => state.tool)
-  const mousePosition = useMousePosition()
+  const mousePosition = useStore(state => state.mousePosition)
 
   return (
     <div className='col-span-3 border-t border-gray-200 flex flex-row gap-3'>

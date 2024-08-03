@@ -2,8 +2,8 @@ import { Input } from '../ui/input'
 import { setCanvasHeight, setCanvasWidth, useStore } from '@/store'
 
 const TopBar = () => {
-  const width = useStore().canvasWidth
-  const height = useStore().canvasHeight
+  const width = useStore(c => c.canvasWidth)
+  const height = useStore(c => c.canvasHeight)
 
   return (
     <div className='col-span-3 border-b border-gray-200 flex flex-row p-2 gap-2'>

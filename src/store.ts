@@ -15,3 +15,7 @@ export const setCanvasHeight = (canvasHeight: number) => {
 export const setTool = (tool: Tool) => {
   useStore.setState({ tool })
 }
+
+export const setMousePosition = (mousePosition: { x: number; y: number }) => {
+  useStore.setState({ mousePosition })
+}

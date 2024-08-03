@@ -1,8 +1,17 @@
-import { useStore } from '@/store'
+import useTrackRelativeMousePosition from '../hooks/useTrackRelativeMousePosition'
+import { setMousePosition, useStore } from '@/store'
+import { useRef } from 'react'
 
 const CanvasWrapper = () => {
-  const width = useStore().canvasWidth
-  const height = useStore().canvasHeight
+  const width = useStore(c => c.canvasWidth)
+  const height = useStore(c => c.canvasHeight)
+  const canvasRef = useRef(null)
+
+  useTrackRelativeMousePosition(canvasRef, position => {
+    setMousePosition(position)
+  })
+
+  console.log('CanvasWrapper render')
 
   return (
     <div className='overflow-auto border-gray-200'>
@@ -17,6 +26,7 @@ const CanvasWrapper = () => {
       >
         {/* Canvas */}
         <div
+          ref={canvasRef}
           className='col-start-2 row-start-2 bg-white'
           style={{ width: `${width}px`, height: `${height}px` }}
         ></div>
