@@ -1,4 +1,11 @@
-import { initialState, State, Tool } from './types'
+import {
+  boundingBox,
+  initialState,
+  intersection,
+  Point,
+  State,
+  ToolType
+} from './model/canvas'
 import { create } from 'zustand'
 
 export const useStore = create(() => initialState)
@@ -6,70 +13,50 @@ export const useStore = create(() => initialState)
 // Selectors
 
 export const previewSelector = (state: State) => {
-  if (state.tool !== 'select') {
+  if (state.tool !== 'select_tool') {
     return undefined
   }
-  if (state.dargStart === undefined) {
+  if (state.dragStart === undefined) {
     return undefined
   }
 
-  // Destructure drag start point and mouse position
-  const { x: startX, y: startY } = state.dargStart
-  let { x: mouseX, y: mouseY } = state.mousePosition
-
-  // Clamp mouseX to canvas boundaries
-  if (mouseX === Infinity) {
-    mouseX = state.canvasWidth
-  } else if (mouseX === -Infinity) {
-    mouseX = 0
-  } else {
-    mouseX = Math.min(Math.max(mouseX, 0), state.canvasWidth)
+  const preview = boundingBox(state.dragStart, state.currentMousePosition)
+  const canvas = {
+    x: 0,
+    y: 0,
+    width: state.canvasSize.width - 1,
+    height: state.canvasSize.height - 1
   }
-
-  // Clamp mouseY to canvas boundaries
-  if (mouseY === Infinity) {
-    mouseY = state.canvasHeight
-  } else if (mouseY === -Infinity) {
-    mouseY = 0
-  } else {
-    mouseY = Math.min(Math.max(mouseY, 0), state.canvasHeight)
-  }
-
-  // Calculate the top-left corner of the rectangle
-  const rectX = Math.min(startX, mouseX)
-  const rectY = Math.min(startY, mouseY)
-
-  // Calculate the width and height of the rectangle
-  const width = Math.abs(startX - mouseX) - 1
-  const height = Math.abs(startY - mouseY) - 1
-
-  // Return the rectangle's properties
-  return { x: rectX, y: rectY, width, height }
+  return intersection(preview, canvas)
 }
 
 // Actions
 export const setCanvasWidth = (canvasWidth: number) => {
-  useStore.setState({ canvasWidth })
+  useStore.setState(s => ({
+    canvasSize: { ...s.canvasSize, width: canvasWidth }
+  }))
 }
 
 export const setCanvasHeight = (canvasHeight: number) => {
-  useStore.setState({ canvasHeight })
+  useStore.setState(s => ({
+    canvasSize: { ...s.canvasSize, height: canvasHeight }
+  }))
 }
 
-export const setTool = (tool: Tool) => {
+export const setTool = (tool: ToolType) => {
   useStore.setState({ tool })
 }
 
-export const onMouseMove = (mousePosition: { x: number; y: number }) => {
-  useStore.setState({ mousePosition })
+export const onMouseMove = (mousePosition: Point) => {
+  useStore.setState({ currentMousePosition: mousePosition })
 }
 
 export const onMouseDown = (mousePosition: { x: number; y: number }) => {
   if (isFinite(mousePosition.x) && isFinite(mousePosition.y)) {
-    useStore.setState({ dargStart: mousePosition })
+    useStore.setState({ dragStart: mousePosition })
   }
 }
 
 export const onMouseUp = () => {
-  useStore.setState({ dargStart: undefined })
+  useStore.setState({ dragStart: undefined })
 }

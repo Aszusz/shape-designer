@@ -11,8 +11,8 @@ import { useRef } from 'react'
 const Canvas = () => {
   const canvasRef = useRef(null)
 
-  const width = useStore(c => c.canvasWidth)
-  const height = useStore(c => c.canvasHeight)
+  const width = useStore(c => c.canvasSize.width)
+  const height = useStore(c => c.canvasSize.height)
   const preview = useStore(c => previewSelector(c))
 
   useRelativeMouseEvents(

@@ -2,8 +2,8 @@ import Canvas from './Canvas'
 import { useStore } from '@/store'
 
 const CanvasWrapper = () => {
-  const width = useStore(c => c.canvasWidth)
-  const height = useStore(c => c.canvasHeight)
+  const width = useStore(c => c.canvasSize.width)
+  const height = useStore(c => c.canvasSize.height)
   console.log('CanvasWrapper render')
 
   return (

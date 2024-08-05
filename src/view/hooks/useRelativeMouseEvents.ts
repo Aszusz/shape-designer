@@ -8,14 +8,8 @@ type MousePosition = {
 type MouseCallback = (pos: MousePosition) => void
 
 const toRelative = (pos: MousePosition, rect: DOMRect) => {
-  let x = pos.x - rect.left
-  let y = pos.y - rect.top
-
-  if (x < 0) x = -Infinity
-  else if (x > rect.width) x = Infinity
-
-  if (y < 0) y = -Infinity
-  else if (y > rect.height) y = Infinity
+  const x = pos.x - rect.left
+  const y = pos.y - rect.top
 
   return { x, y }
 }

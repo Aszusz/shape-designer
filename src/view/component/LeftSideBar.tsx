@@ -9,10 +9,10 @@ import {
 
 const LeftSideBar = () => {
   const selectedTool = useStore(state => state.tool)
-  const setSelectTool = () => setTool('select')
-  const setPanTool = () => setTool('pan')
-  const setRectangleTool = () => setTool('rectangle')
-  const setEllipseTool = () => setTool('ellipse')
+  const setSelectTool = () => setTool('select_tool')
+  const setPanTool = () => setTool('pan_tool')
+  const setRectangleTool = () => setTool('rectangle_tool')
+  const setEllipseTool = () => setTool('ellipse_tool')
 
   return (
     <div className='border-r border-gray-200 flex flex-col p-2 gap-2'>
@@ -20,7 +20,7 @@ const LeftSideBar = () => {
         <Tooltip>
           <TooltipTrigger asChild>
             <Button
-              variant={selectedTool === 'select' ? 'outline' : 'ghost'}
+              variant={selectedTool === 'select_tool' ? 'outline' : 'ghost'}
               size='icon'
               onClick={setSelectTool}
             >
@@ -33,7 +33,7 @@ const LeftSideBar = () => {
         <Tooltip>
           <TooltipTrigger asChild>
             <Button
-              variant={selectedTool === 'pan' ? 'outline' : 'ghost'}
+              variant={selectedTool === 'pan_tool' ? 'outline' : 'ghost'}
               size='icon'
               onClick={setPanTool}
             >
@@ -46,7 +46,7 @@ const LeftSideBar = () => {
         <Tooltip>
           <TooltipTrigger asChild>
             <Button
-              variant={selectedTool === 'rectangle' ? 'outline' : 'ghost'}
+              variant={selectedTool === 'rectangle_tool' ? 'outline' : 'ghost'}
               size='icon'
               onClick={setRectangleTool}
             >
@@ -59,7 +59,7 @@ const LeftSideBar = () => {
         <Tooltip>
           <TooltipTrigger asChild>
             <Button
-              variant={selectedTool === 'ellipse' ? 'outline' : 'ghost'}
+              variant={selectedTool === 'ellipse_tool' ? 'outline' : 'ghost'}
               size='icon'
               onClick={setEllipseTool}
             >

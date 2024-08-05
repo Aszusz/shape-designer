@@ -2,7 +2,7 @@ import { useStore } from '@/store'
 
 const StatusBar = () => {
   const tool = useStore(state => state.tool)
-  const mousePosition = useStore(state => state.mousePosition)
+  const mousePosition = useStore(state => state.currentMousePosition)
 
   return (
     <div className='col-span-3 border-t border-gray-200 flex flex-row gap-3'>
