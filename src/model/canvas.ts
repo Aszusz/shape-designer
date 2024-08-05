@@ -123,3 +123,10 @@ export function intersection(
   // No intersection
   return null
 }
+
+export function addShape(state: State, shape: Shape): State {
+  return {
+    ...state,
+    shapes: [...state.shapes, shape]
+  }
+}

@@ -3,6 +3,7 @@ import {
   initialState,
   intersection,
   Point,
+  Shape,
   State,
   ToolType
 } from './model/canvas'
@@ -58,5 +59,36 @@ export const onMouseDown = (mousePosition: { x: number; y: number }) => {
 }
 
 export const onMouseUp = () => {
-  useStore.setState({ dragStart: undefined })
+  useStore.setState(state => {
+    if (state.dragStart === undefined) {
+      return state
+    }
+
+    if (state.toolType === 'pan_tool') {
+      return { ...state, dragStart: undefined }
+    }
+    if (state.toolType === 'select_tool') {
+      return { ...state, dragStart: undefined }
+    }
+
+    const bb = boundingBox(state.dragStart, state.currentMousePosition)
+
+    const newShape: Shape = {
+      type:
+        state.toolType === 'rectangle_tool'
+          ? 'rectangle_shape'
+          : 'ellipse_shape',
+      isSelected: false,
+      x: bb.x,
+      y: bb.y,
+      width: bb.width,
+      height: bb.height
+    }
+
+    return {
+      ...state,
+      dragStart: undefined,
+      shapes: [...state.shapes, newShape]
+    }
+  })
 }
