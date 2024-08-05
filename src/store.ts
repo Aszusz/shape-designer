@@ -13,7 +13,7 @@ export const useStore = create(() => initialState)
 // Selectors
 
 export const previewSelector = (state: State) => {
-  if (state.tool !== 'select_tool') {
+  if (state.toolType === 'pan_tool') {
     return undefined
   }
   if (state.dragStart === undefined) {
@@ -44,7 +44,7 @@ export const setCanvasHeight = (canvasHeight: number) => {
 }
 
 export const setTool = (tool: ToolType) => {
-  useStore.setState({ tool })
+  useStore.setState({ toolType: tool })
 }
 
 export const onMouseMove = (mousePosition: Point) => {

@@ -1,7 +1,7 @@
 import { useStore } from '@/store'
 
 const StatusBar = () => {
-  const tool = useStore(state => state.tool)
+  const tool = useStore(state => state.toolType)
   const mousePosition = useStore(state => state.currentMousePosition)
 
   return (

@@ -33,7 +33,7 @@ export type Shape = Readonly<{
   BoundingBox
 
 export type State = Readonly<{
-  tool: ToolType
+  toolType: ToolType
   canvasSize: Size
   dragStart?: Point
   currentMousePosition: Point
@@ -41,7 +41,7 @@ export type State = Readonly<{
 }>
 
 export const initialState: State = {
-  tool: SelectTool,
+  toolType: SelectTool,
   canvasSize: { width: 800, height: 600 },
   dragStart: undefined,
   currentMousePosition: { x: NaN, y: NaN },

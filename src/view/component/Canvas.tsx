@@ -13,6 +13,7 @@ const Canvas = () => {
 
   const width = useStore(c => c.canvasSize.width)
   const height = useStore(c => c.canvasSize.height)
+  const toolType = useStore(c => c.toolType)
   const preview = useStore(c => previewSelector(c))
 
   useRelativeMouseEvents(
@@ -32,15 +33,36 @@ const Canvas = () => {
       className='col-start-2 row-start-2 bg-white'
       style={{ width: `${width}px`, height: `${height}px` }}
     >
-      {preview && (
+      {preview && toolType === 'select_tool' && (
         <rect
           x={preview.x}
           y={preview.y}
           width={preview.width}
           height={preview.height}
-          fill='none'
-          stroke='black'
-          strokeWidth='1'
+          stroke='blue'
+          fill='rgba(0, 0, 255, 0.2)'
+        />
+      )}
+
+      {preview && toolType === 'rectangle_tool' && (
+        <rect
+          x={preview.x}
+          y={preview.y}
+          width={preview.width}
+          height={preview.height}
+          stroke='darkgrey'
+          fill='white'
+        />
+      )}
+
+      {preview && toolType === 'ellipse_tool' && (
+        <ellipse
+          cx={preview.x + preview.width / 2} // Center x
+          cy={preview.y + preview.height / 2} // Center y
+          rx={preview.width / 2} // Radius x
+          ry={preview.height / 2} // Radius y
+          stroke='darkgrey'
+          fill='white'
         />
       )}
     </svg>

@@ -8,7 +8,7 @@ import {
 } from '@/view/ui/tooltip'
 
 const LeftSideBar = () => {
-  const selectedTool = useStore(state => state.tool)
+  const selectedTool = useStore(state => state.toolType)
   const setSelectTool = () => setTool('select_tool')
   const setPanTool = () => setTool('pan_tool')
   const setRectangleTool = () => setTool('rectangle_tool')
