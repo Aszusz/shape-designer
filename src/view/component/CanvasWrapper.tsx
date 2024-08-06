@@ -15,7 +15,7 @@ const CanvasWrapper = () => {
         style={{
           minWidth: `max(100%, ${width}px)`,
           minHeight: `100%`,
-          shapeRendering: 'crispEdges',
+          shapeRendering: 'geometricPrecision',
           paddingLeft: `${padding.left}px`,
           paddingRight: `${padding.right}px`,
           paddingBottom: `${padding.bottom}px`,

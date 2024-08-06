@@ -45,13 +45,17 @@ const Canvas = () => {
             height='10'
             patternUnits='userSpaceOnUse'
           >
-            <path
-              d='M 10 0 L 0 0 0 10'
+            <rect
+              x='0.5'
+              y='0.5'
+              width='9'
+              height='9'
               fill='none'
               stroke='#f3f4f6'
               strokeWidth='1'
             />
           </pattern>
+
           <pattern
             id='grid'
             width='100'
@@ -59,9 +63,12 @@ const Canvas = () => {
             patternUnits='userSpaceOnUse'
           >
             <rect width='100' height='100' fill='url(#smallGrid)' />
-            <path
-              d='M 100 0 L 0 0 0 100'
-              fill='transparent'
+            <rect
+              x='0.5'
+              y='0.5'
+              width='99'
+              height='99'
+              fill='none'
               stroke='#e5e7eb'
               strokeWidth='1'
             />
@@ -79,6 +86,7 @@ const Canvas = () => {
                 height={shape.height}
                 stroke='black'
                 fill='white'
+                strokeWidth={2}
               />
             )
           } else if (shape.type === 'ellipse_shape') {
@@ -91,6 +99,7 @@ const Canvas = () => {
                 ry={shape.height / 2} // Radius y
                 stroke='black'
                 fill='white'
+                strokeWidth={2}
               />
             )
           }
@@ -104,7 +113,9 @@ const Canvas = () => {
             width={preview.width}
             height={preview.height}
             stroke='blue'
-            fill='rgba(0, 0, 255, 0.2)'
+            strokeWidth={2}
+            style={{ strokeDasharray: '6,2' }}
+            fill='rgba(0, 0, 255, 0.1)'
           />
         )}
 
@@ -116,6 +127,7 @@ const Canvas = () => {
             height={preview.height}
             stroke='darkgrey'
             fill='white'
+            strokeWidth={2}
           />
         )}
 
@@ -127,6 +139,7 @@ const Canvas = () => {
             ry={preview.height / 2} // Radius y
             stroke='darkgrey'
             fill='white'
+            strokeWidth={2}
           />
         )}
       </svg>
