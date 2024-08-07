@@ -101,3 +101,27 @@ export const onMouseUp = () => {
     }
   })
 }
+
+export const deselectAllShapes = () => {
+  useStore.setState(state => {
+    const shapes = state.shapes.map(shape => {
+      return { ...shape, isSelected: false }
+    })
+    return { ...state, shapes }
+  })
+}
+
+export const selectShape = (shapeId: string) => {
+  deselectAllShapes()
+
+  useStore.setState(state => {
+    const shape = state.shapes.get(shapeId)
+    if (shape === undefined) {
+      return state
+    }
+    return {
+      ...state,
+      shapes: state.shapes.set(shapeId, { ...shape, isSelected: true })
+    }
+  })
+}
