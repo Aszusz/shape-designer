@@ -1,3 +1,5 @@
+import { ReadonlyOrderedRecord } from './readonlyOrderedRecord'
+
 export type Point = Readonly<{
   x: number
   y: number
@@ -27,6 +29,7 @@ export const EllipseShape = 'ellipse_shape'
 export type ShapeType = typeof RectangleShape | typeof EllipseShape
 
 export type Shape = Readonly<{
+  id: string
   type: ShapeType
   isSelected: boolean
 }> &
@@ -37,7 +40,7 @@ export type State = Readonly<{
   canvasSize: Size
   dragStart?: Point
   currentMousePosition: Point
-  shapes: Shape[]
+  shapes: ReadonlyOrderedRecord<Shape>
 }>
 
 export const initialState: State = {
@@ -45,7 +48,7 @@ export const initialState: State = {
   canvasSize: { width: 800, height: 600 },
   dragStart: undefined,
   currentMousePosition: { x: NaN, y: NaN },
-  shapes: []
+  shapes: new ReadonlyOrderedRecord()
 }
 
 export function isInCanvas(point: Point, canvasSize: Size): boolean {
@@ -105,11 +108,4 @@ export function intersection(
 
   // No intersection
   return null
-}
-
-export function addShape(state: State, shape: Shape): State {
-  return {
-    ...state,
-    shapes: [...state.shapes, shape]
-  }
 }

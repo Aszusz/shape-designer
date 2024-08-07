@@ -17,7 +17,7 @@ const Canvas = () => {
   const width = useStore(c => c.canvasSize.width)
   const height = useStore(c => c.canvasSize.height)
   const toolType = useStore(c => c.toolType)
-  const shapes = useStore(c => c.shapes)
+  const shapesIds = useStore(c => c.shapes.getOrder())
   const preview = useStore(c => previewSelector(c))
 
   useRelativeMouseEvents(
@@ -51,8 +51,8 @@ const Canvas = () => {
         {/* Render the Grid first */}
         <Grid />
         {/* Render existing shapes on top of the Grid */}
-        {shapes.map((shape, index) => (
-          <Shape key={index} shape={shape} />
+        {shapesIds.map(shapeId => (
+          <Shape key={shapeId} shapeId={shapeId} />
         ))}
         {/* Render the preview shape on top of everything */}
         <Preview preview={preview} toolType={toolType} />

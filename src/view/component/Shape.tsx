@@ -1,10 +1,16 @@
-import { Shape as ShapeModel } from '@/model/canvas'
+import { useStore } from '@/store'
 
 type ShapeViewProps = {
-  shape: ShapeModel
+  shapeId: string
 }
 
-const Shape = ({ shape }: ShapeViewProps) => {
+const Shape = ({ shapeId: shapeId }: ShapeViewProps) => {
+  const shape = useStore(c => c.shapes.get(shapeId))
+
+  if (!shape) {
+    return <></>
+  }
+
   if (shape.type === 'rectangle_shape') {
     return (
       <rect

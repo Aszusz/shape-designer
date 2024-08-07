@@ -9,6 +9,7 @@ import {
   State,
   ToolType
 } from './model/canvas'
+import { nanoid } from 'nanoid'
 import { create } from 'zustand'
 
 export const useStore = create(() => initialState)
@@ -81,6 +82,7 @@ export const onMouseUp = () => {
     const bb = boundingBox(state.dragStart, state.currentMousePosition)
 
     const newShape: Shape = {
+      id: nanoid(),
       type:
         state.toolType === 'rectangle_tool'
           ? 'rectangle_shape'
@@ -95,7 +97,7 @@ export const onMouseUp = () => {
     return {
       ...state,
       dragStart: undefined,
-      shapes: [...state.shapes, newShape]
+      shapes: state.shapes.set(newShape.id, newShape)
     }
   })
 }

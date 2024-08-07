@@ -3,37 +3,39 @@ import { useStore } from '@/store'
 import React, { useState } from 'react'
 
 const RightSideBar: React.FC = () => {
-  // Retrieve the shapes array from the state
-  const shapes = useStore((state: State) => state.shapes)
+  // Retrieve the shapes ordered record from the state
+  const shapesRecord = useStore((state: State) => state.shapes)
 
-  // State to manage the selected shape
-  const [selectedShapeIndex, setSelectedShapeIndex] = useState<number | null>(
-    null
-  )
+  // State to manage the selected shape by ID
+  const [selectedShapeId, setSelectedShapeId] = useState<string | null>(null)
+
+  // Get the ordered list of shapes
+  const shapesList = shapesRecord.entries()
 
   // Handler to select a shape
-  const handleShapeSelect = (index: number) => {
-    setSelectedShapeIndex(index)
+  const handleShapeSelect = (id: string) => {
+    setSelectedShapeId(id)
   }
 
   // Get the selected shape details
-  const selectedShape =
-    selectedShapeIndex !== null ? shapes[selectedShapeIndex] : null
+  const selectedShape = selectedShapeId
+    ? shapesRecord.get(selectedShapeId)
+    : null
 
   return (
     <div className='border-l border-gray-200 flex flex-col h-full'>
       {/* Top Panel: Shapes List */}
       <div className='flex-1 overflow-y-auto p-4'>
         <h2 className='font-bold mb-2'>Shapes:</h2>
-        {shapes.length > 0 ? (
+        {shapesList.length > 0 ? (
           <ul>
-            {shapes.map((shape, index) => (
+            {shapesList.map(([id, shape]) => (
               <li
-                key={index}
+                key={id}
                 className={`mb-2 p-2 border rounded ${
-                  selectedShapeIndex === index ? 'bg-blue-200' : 'bg-white'
+                  selectedShapeId === id ? 'bg-blue-200' : 'bg-white'
                 } cursor-pointer`}
-                onClick={() => handleShapeSelect(index)}
+                onClick={() => handleShapeSelect(id)}
               >
                 <div>
                   <strong>Type:</strong> {shape.type}
@@ -62,10 +64,6 @@ const RightSideBar: React.FC = () => {
           <div>
             <div>
               <strong>Type:</strong> {selectedShape.type}
-            </div>
-            <div>
-              <strong>Selected:</strong>{' '}
-              {selectedShape.isSelected ? 'Yes' : 'No'}
             </div>
             <div>
               <strong>Position:</strong> ({selectedShape.x}, {selectedShape.y})
