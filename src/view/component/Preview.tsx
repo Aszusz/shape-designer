@@ -11,8 +11,8 @@ const Preview = ({ preview, toolType }: PreviewProps) => {
   if (toolType === 'select_tool') {
     return (
       <rect
-        x={preview.x}
-        y={preview.y}
+        x={preview.x + 1}
+        y={preview.y + 1}
         width={preview.width}
         height={preview.height}
         stroke='blue'
@@ -26,8 +26,8 @@ const Preview = ({ preview, toolType }: PreviewProps) => {
   if (toolType === 'rectangle_tool') {
     return (
       <rect
-        x={preview.x}
-        y={preview.y}
+        x={preview.x + 1}
+        y={preview.y + 1}
         width={preview.width}
         height={preview.height}
         stroke='darkgrey'
@@ -40,8 +40,8 @@ const Preview = ({ preview, toolType }: PreviewProps) => {
   if (toolType === 'ellipse_tool') {
     return (
       <ellipse
-        cx={preview.x + preview.width / 2} // Center x
-        cy={preview.y + preview.height / 2} // Center y
+        cx={preview.x + 1 + preview.width / 2} // Center x
+        cy={preview.y + 1 + preview.height / 2} // Center y
         rx={preview.width / 2} // Radius x
         ry={preview.height / 2} // Radius y
         stroke='darkgrey'

@@ -35,8 +35,8 @@ const Canvas = () => {
     <svg
       ref={canvasRef}
       style={{
-        width: `${width}px`,
-        height: `${height}px`,
+        width: `${width + 1}px`,
+        height: `${height + 1}px`,
         backgroundColor: 'white'
       }}
     >
@@ -50,6 +50,15 @@ const Canvas = () => {
 
       {/* Render the preview shape on top of everything */}
       <Preview preview={preview} toolType={toolType} />
+
+      <rect
+        ref={canvasRef}
+        x={1}
+        y={1}
+        width={width}
+        height={height}
+        fill='transparent'
+      />
     </svg>
   )
 }
