@@ -48,6 +48,22 @@ export const initialState: State = {
   shapes: []
 }
 
+export function isInCanvas(point: Point, canvasSize: Size): boolean {
+  return (
+    point.x >= 0 &&
+    point.x <= canvasSize.width &&
+    point.y >= 0 &&
+    point.y <= canvasSize.height
+  )
+}
+
+export function limitToCanvas(point: Point, canvasSize: Size): Point {
+  return {
+    x: Math.min(Math.max(0, point.x), canvasSize.width),
+    y: Math.min(Math.max(0, point.y), canvasSize.height)
+  }
+}
+
 export function boundingBox(point1: Point, point2: Point): BoundingBox {
   // Calculate the top-left corner of the bounding box
   const x = Math.min(point1.x, point2.x)

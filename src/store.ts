@@ -2,6 +2,8 @@ import {
   boundingBox,
   initialState,
   intersection,
+  isInCanvas,
+  limitToCanvas,
   Point,
   Shape,
   State,
@@ -49,13 +51,18 @@ export const setTool = (tool: ToolType) => {
 }
 
 export const onMouseMove = (mousePosition: Point) => {
-  useStore.setState({ currentMousePosition: mousePosition })
+  useStore.setState(state => {
+    const adjustedPosition = limitToCanvas(mousePosition, state.canvasSize)
+    return { ...state, currentMousePosition: adjustedPosition }
+  })
 }
 
 export const onMouseDown = (mousePosition: { x: number; y: number }) => {
-  if (isFinite(mousePosition.x) && isFinite(mousePosition.y)) {
-    useStore.setState({ dragStart: mousePosition })
-  }
+  useStore.setState(state => {
+    return isInCanvas(mousePosition, state.canvasSize)
+      ? { ...state, dragStart: mousePosition }
+      : state
+  })
 }
 
 export const onMouseUp = () => {
