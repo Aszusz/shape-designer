@@ -10,8 +10,8 @@ function useDynamicPadding(parentRef: RefObject<HTMLDivElement>) {
     left: 0
   })
 
-  const width = useStore(c => c.canvasSize.width)
-  const height = useStore(c => c.canvasSize.height)
+  const width = useStore(c => c.canvasSize.width) + 2
+  const height = useStore(c => c.canvasSize.height) + 2
 
   useEffect(() => {
     function calculatePadding() {
