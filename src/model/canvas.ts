@@ -45,24 +45,7 @@ export const initialState: State = {
   canvasSize: { width: 800, height: 600 },
   dragStart: undefined,
   currentMousePosition: { x: NaN, y: NaN },
-  shapes: [
-    {
-      type: RectangleShape,
-      isSelected: false,
-      x: 0,
-      y: 0,
-      width: 100,
-      height: 100
-    },
-    {
-      type: RectangleShape,
-      isSelected: false,
-      x: 100,
-      y: 100,
-      width: 100,
-      height: 100
-    }
-  ]
+  shapes: []
 }
 
 export function boundingBox(point1: Point, point2: Point): BoundingBox {

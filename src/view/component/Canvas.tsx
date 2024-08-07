@@ -33,32 +33,30 @@ const Canvas = () => {
 
   return (
     <svg
-      ref={canvasRef}
       style={{
-        width: `${width + 1}px`,
-        height: `${height + 1}px`,
-        backgroundColor: 'white'
+        width: `${width + 2}px`,
+        height: `${height + 2}px`,
+        backgroundColor: '#d1d5db'
       }}
     >
-      {/* Render the Grid first */}
-      <Grid />
-
-      {/* Render existing shapes on top of the Grid */}
-      {shapes.map((shape, index) => (
-        <Shape key={index} shape={shape} />
-      ))}
-
-      {/* Render the preview shape on top of everything */}
-      <Preview preview={preview} toolType={toolType} />
-
-      <rect
+      <svg
         ref={canvasRef}
+        overflow={'visible'}
         x={1}
         y={1}
         width={width}
         height={height}
         fill='transparent'
-      />
+      >
+        {/* Render the Grid first */}
+        <Grid />
+        {/* Render existing shapes on top of the Grid */}
+        {shapes.map((shape, index) => (
+          <Shape key={index} shape={shape} />
+        ))}
+        {/* Render the preview shape on top of everything */}
+        <Preview preview={preview} toolType={toolType} />
+      </svg>
     </svg>
   )
 }
