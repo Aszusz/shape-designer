@@ -10,7 +10,7 @@ const ShapeProperties: React.FC = () => {
     .filter(([_, shape]) => shape.isSelected)
 
   return (
-    <div className='flex-1 p-4'>
+    <div className='flex-1'>
       <h2 className='font-bold mb-2'>Properties:</h2>
       {selectedShapes.length > 0 ? (
         <ul>

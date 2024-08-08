@@ -10,7 +10,7 @@ const ShapeList: React.FC = () => {
   }
 
   return (
-    <div className='flex-1 overflow-y-auto p-4'>
+    <div className='overflow-auto max-h-full'>
       <h2 className='font-bold mb-2'>Shapes:</h2>
       {shapes.getOrder().length > 0 ? (
         <ul>
