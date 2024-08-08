@@ -18,7 +18,7 @@ const Shape = ({ shapeId: shapeId }: ShapeViewProps) => {
         y={shape.y}
         width={shape.width}
         height={shape.height}
-        stroke='black'
+        stroke={shape.isSelected ? 'blue' : 'black'}
         fill='white'
         strokeWidth={2}
       />
@@ -30,7 +30,7 @@ const Shape = ({ shapeId: shapeId }: ShapeViewProps) => {
         cy={shape.y + shape.height / 2} // Center y
         rx={shape.width / 2} // Radius x
         ry={shape.height / 2} // Radius y
-        stroke='black'
+        stroke={shape.isSelected ? 'blue' : 'black'}
         fill='white'
         strokeWidth={2}
       />
