@@ -81,6 +81,10 @@ export const onMouseUp = () => {
 
     const bb = boundingBox(state.dragStart, state.currentMousePosition)
 
+    if (bb.width < 5 || bb.height < 5) {
+      return { ...state, dragStart: undefined }
+    }
+
     const newShape: Shape = {
       id: nanoid(),
       type:
