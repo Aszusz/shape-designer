@@ -1,24 +1,21 @@
 import useRelativeMouseEvents from '../hooks/useRelativeMouseEvents'
 import Grid from './Grid'
-import Preview from './Preview'
 import Shape from './Shape'
+import ToolPreview from './ToolPreview'
 import {
   onMouseDown,
   onMouseMove,
   onMouseUp,
-  previewSelector,
-  useStore
+  useCanvasSize,
+  useShapeIds
 } from '@/store'
 import { useRef } from 'react'
 
 const Canvas = () => {
   const canvasRef = useRef(null)
 
-  const width = useStore(c => c.canvasSize.width)
-  const height = useStore(c => c.canvasSize.height)
-  const toolType = useStore(c => c.toolType)
-  const shapesIds = useStore(c => c.shapes.getOrder())
-  const preview = useStore(c => previewSelector(c))
+  const { width, height } = useCanvasSize()
+  const shapeIds = useShapeIds()
 
   useRelativeMouseEvents(
     canvasRef,
@@ -51,11 +48,11 @@ const Canvas = () => {
         {/* Render the Grid first */}
         <Grid />
         {/* Render existing shapes on top of the Grid */}
-        {shapesIds.map(shapeId => (
+        {shapeIds.map(shapeId => (
           <Shape key={shapeId} shapeId={shapeId} />
         ))}
         {/* Render the preview shape on top of everything */}
-        <Preview preview={preview} toolType={toolType} />
+        <ToolPreview />
       </svg>
     </svg>
   )

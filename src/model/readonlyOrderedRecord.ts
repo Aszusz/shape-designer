@@ -42,6 +42,10 @@ export class ReadonlyOrderedRecord<T> {
     return new ReadonlyOrderedRecord<T>(this.data, newOrder)
   }
 
+  values(): T[] {
+    return this.order.map(key => this.data[key])
+  }
+
   entries(): [string, T][] {
     return this.order.map(key => [key, this.data[key]])
   }

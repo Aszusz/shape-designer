@@ -1,12 +1,11 @@
 import ShapeListItem from './ShapeListItem'
-import { State } from '@/model/core'
-import { useStore } from '@/store'
+import { useShapeIds } from '@/store'
 import React from 'react'
 
 // Import the ShapeListItem component
 
 const ShapeList: React.FC = () => {
-  const shapesIds = useStore((state: State) => state.shapes.getOrder())
+  const shapesIds = useShapeIds()
 
   return (
     <div className='h-full flex flex-col'>

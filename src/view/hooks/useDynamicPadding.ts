@@ -1,6 +1,6 @@
 import useEventListener from './useEventListener'
-import { useStore } from '@/store'
-import { RefObject, useEffect, useState } from 'react'
+import { useCanvasBorderSize } from '@/store'
+import { RefObject, useCallback, useEffect, useState } from 'react'
 
 // Custom hook to calculate paddings
 function useDynamicPadding(parentRef: RefObject<HTMLDivElement>) {
@@ -11,10 +11,9 @@ function useDynamicPadding(parentRef: RefObject<HTMLDivElement>) {
     left: 0
   })
 
-  const width = useStore(c => c.canvasSize.width) + 2
-  const height = useStore(c => c.canvasSize.height) + 2
+  const { width, height } = useCanvasBorderSize()
 
-  const calculatePadding = () => {
+  const calculatePadding = useCallback(() => {
     if (parentRef.current) {
       const parentRect = parentRef.current.getBoundingClientRect()
 
@@ -38,12 +37,12 @@ function useDynamicPadding(parentRef: RefObject<HTMLDivElement>) {
         left: leftPadding
       })
     }
-  }
+  }, [parentRef, width, height])
 
   useEffect(() => {
     // Calculate padding initially
     calculatePadding()
-  }, [parentRef, width, height])
+  }, [parentRef, width, height, calculatePadding])
 
   useEventListener('resize', calculatePadding, window)
 

@@ -2,12 +2,32 @@ import * as core from './model/core'
 import { Point, Size } from './model/geometry'
 import { create } from 'zustand'
 
-export const useStore = create(() => core.initialState)
+const useStore = create(() => core.initialState)
 
 // Selectors
-export const previewSelector = (state: core.State) => core.getPreview(state)
+
+export const useCanvasSize = () => useStore(state => state.canvasSize)
+
+export const useCanvasBorderSize = () =>
+  useStore(state => core.getBorderSize(state))
+
+export const useToolType = () => useStore(state => state.toolType)
+
+export const useMousePosition = () =>
+  useStore(state => state.currentMousePosition)
+
+export const useToolPreview = () => useStore(state => core.getPreview(state))
+
+export const useShapeIds = () => useStore(state => state.shapes.getOrder())
+
+export const useShape = (shapeId: string) =>
+  useStore(state => state.shapes.get(shapeId))
+
+export const useSelectedShapes = () =>
+  useStore(state => core.getSelectedShapes(state))
 
 // Actions
+
 export const setCanvasSize = (size: Size) => {
   useStore.setState(state => core.setCanvasSize(state, size))
 }

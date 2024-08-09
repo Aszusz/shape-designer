@@ -65,6 +65,11 @@ export const getPreview = (state: State) => {
   return intersection(preview, canvas)
 }
 
+export const getBorderSize = (state: State): Size => ({
+  width: state.canvasSize.width + 2,
+  height: state.canvasSize.height + 2
+})
+
 // State Manipulation Functions
 export const setCanvasSize = (state: State, size: Size): State => ({
   ...state,
@@ -143,4 +148,7 @@ export const selectShape = (state: State, shapeId: string): State => {
     ...deselectedState,
     shapes: deselectedState.shapes.set(shapeId, { ...shape, isSelected: true })
   }
+}
+export function getSelectedShapes(state: State): Shape[] {
+  return state.shapes.values().filter(shape => shape.isSelected)
 }

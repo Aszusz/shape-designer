@@ -1,11 +1,11 @@
-import { selectShape, useStore } from '@/store'
+import { selectShape, useShape } from '@/store'
 
 type ShapeViewProps = {
   shapeId: string
 }
 
 const Shape = ({ shapeId: shapeId }: ShapeViewProps) => {
-  const shape = useStore(c => c.shapes.get(shapeId))
+  const shape = useShape(shapeId)
 
   if (!shape) {
     return <></>

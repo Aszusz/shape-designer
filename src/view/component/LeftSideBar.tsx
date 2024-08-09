@@ -1,5 +1,5 @@
 import { Button } from '../ui/button'
-import { setTool, useStore } from '@/store'
+import { setTool, useToolType } from '@/store'
 import {
   Tooltip,
   TooltipContent,
@@ -8,7 +8,7 @@ import {
 } from '@/view/ui/tooltip'
 
 const LeftSideBar = () => {
-  const selectedTool = useStore(state => state.toolType)
+  const selectedTool = useToolType()
   const setSelectTool = () => setTool('select_tool')
   const setPanTool = () => setTool('pan_tool')
   const setRectangleTool = () => setTool('rectangle_tool')

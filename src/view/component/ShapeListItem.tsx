@@ -1,5 +1,5 @@
 import { cn } from '@/lib/cn'
-import { selectShape, useStore } from '@/store'
+import { selectShape, useShape } from '@/store'
 import React from 'react'
 
 interface ShapeListItemProps {
@@ -7,7 +7,7 @@ interface ShapeListItemProps {
 }
 
 const ShapeListItem: React.FC<ShapeListItemProps> = ({ id }) => {
-  const shape = useStore(state => state.shapes.get(id))
+  const shape = useShape(id)
 
   return shape === undefined ? (
     <></>
