@@ -1,3 +1,4 @@
+import useEventListener from './useEventListener'
 import { useState, useCallback, useEffect, RefObject } from 'react'
 
 interface Rect {
@@ -28,12 +29,9 @@ function useClientRect(ref: RefObject<HTMLDivElement>): Rect | undefined {
 
   useEffect(() => {
     updateRect()
-
-    window.addEventListener('resize', updateRect)
-    return () => {
-      window.removeEventListener('resize', updateRect)
-    }
   }, [updateRect])
+
+  useEventListener('resize', updateRect, window)
 
   return rect
 }

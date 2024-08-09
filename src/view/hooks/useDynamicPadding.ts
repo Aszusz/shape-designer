@@ -1,3 +1,4 @@
+import useEventListener from './useEventListener'
 import { useStore } from '@/store'
 import { RefObject, useEffect, useState } from 'react'
 
@@ -13,43 +14,38 @@ function useDynamicPadding(parentRef: RefObject<HTMLDivElement>) {
   const width = useStore(c => c.canvasSize.width) + 2
   const height = useStore(c => c.canvasSize.height) + 2
 
-  useEffect(() => {
-    function calculatePadding() {
-      if (parentRef.current) {
-        const parentRect = parentRef.current.getBoundingClientRect()
+  const calculatePadding = () => {
+    if (parentRef.current) {
+      const parentRect = parentRef.current.getBoundingClientRect()
 
-        // Calculate available space
-        const availableWidth = parentRect.width - width
-        const availableHeight = parentRect.height - height
+      // Calculate available space
+      const availableWidth = parentRect.width - width
+      const availableHeight = parentRect.height - height
 
-        // Compute padding, set to zero if child is larger
-        const topPadding =
-          availableHeight > 0 ? Math.ceil(availableHeight / 2) : 0
-        const bottomPadding =
-          availableHeight > 0 ? Math.floor(availableHeight / 2) : 0
-        const leftPadding =
-          availableWidth > 0 ? Math.ceil(availableWidth / 2) : 0
-        const rightPadding =
-          availableWidth > 0 ? Math.floor(availableWidth / 2) : 0
+      // Compute padding, set to zero if child is larger
+      const topPadding =
+        availableHeight > 0 ? Math.ceil(availableHeight / 2) : 0
+      const bottomPadding =
+        availableHeight > 0 ? Math.floor(availableHeight / 2) : 0
+      const leftPadding = availableWidth > 0 ? Math.ceil(availableWidth / 2) : 0
+      const rightPadding =
+        availableWidth > 0 ? Math.floor(availableWidth / 2) : 0
 
-        setPadding({
-          top: topPadding,
-          right: rightPadding,
-          bottom: bottomPadding,
-          left: leftPadding
-        })
-      }
+      setPadding({
+        top: topPadding,
+        right: rightPadding,
+        bottom: bottomPadding,
+        left: leftPadding
+      })
     }
+  }
 
+  useEffect(() => {
     // Calculate padding initially
     calculatePadding()
-
-    // Add event listener to recalculate padding on window resize
-    window.addEventListener('resize', calculatePadding)
-    return () => {
-      window.removeEventListener('resize', calculatePadding)
-    }
   }, [parentRef, width, height])
+
+  useEventListener('resize', calculatePadding, window)
 
   return padding
 }

@@ -1,4 +1,5 @@
-import { useEffect, RefObject } from 'react'
+import useEventListener from './useEventListener'
+import { RefObject } from 'react'
 
 type MousePosition = {
   x: number
@@ -7,10 +8,9 @@ type MousePosition = {
 
 type MouseCallback = (pos: MousePosition) => void
 
-const toRelative = (pos: MousePosition, rect: DOMRect) => {
+const toRelative = (pos: MousePosition, rect: DOMRect): MousePosition => {
   const x = pos.x - rect.left
   const y = pos.y - rect.top
-
   return { x, y }
 }
 
@@ -20,48 +20,43 @@ function useMousePositionRelativeToElement(
   onMouseDown: MouseCallback,
   onMouseUp: MouseCallback
 ) {
-  useEffect(() => {
-    const element = ref.current
-    if (!element) return
+  const element = ref.current
 
-    const handleMouseMove = (event: MouseEvent) => {
-      if (!element) return
-      const rect = element.getBoundingClientRect()
+  useEventListener(
+    'mousemove',
+    (event: MouseEvent) => {
+      if (element) {
+        const rect = element.getBoundingClientRect()
+        const pos = toRelative({ x: event.clientX, y: event.clientY }, rect)
+        onMouseMove(pos)
+      }
+    },
+    document
+  )
 
-      const pos = toRelative({ x: event.clientX, y: event.clientY }, rect)
+  useEventListener(
+    'mousedown',
+    (event: MouseEvent) => {
+      if (element) {
+        const rect = element.getBoundingClientRect()
+        const pos = toRelative({ x: event.clientX, y: event.clientY }, rect)
+        onMouseDown(pos)
+      }
+    },
+    document
+  )
 
-      onMouseMove(pos)
-    }
-
-    const handleMouseDown = (event: MouseEvent) => {
-      if (!element) return
-      const rect = element.getBoundingClientRect()
-
-      const pos = toRelative({ x: event.clientX, y: event.clientY }, rect)
-
-      onMouseDown(pos)
-    }
-
-    const handleMouseUp = (event: MouseEvent) => {
-      if (!element) return
-      const rect = element.getBoundingClientRect()
-
-      const pos = toRelative({ x: event.clientX, y: event.clientY }, rect)
-
-      onMouseUp(pos)
-    }
-
-    document.addEventListener('mousemove', handleMouseMove)
-    document.addEventListener('mousedown', handleMouseDown)
-    document.addEventListener('mouseup', handleMouseUp)
-
-    // Cleanup function to remove the event listener
-    return () => {
-      document.removeEventListener('mousemove', handleMouseMove)
-      document.removeEventListener('mousedown', handleMouseDown)
-      document.removeEventListener('mouseup', handleMouseUp)
-    }
-  }, [onMouseDown, onMouseMove, onMouseUp, ref])
+  useEventListener(
+    'mouseup',
+    (event: MouseEvent) => {
+      if (element) {
+        const rect = element.getBoundingClientRect()
+        const pos = toRelative({ x: event.clientX, y: event.clientY }, rect)
+        onMouseUp(pos)
+      }
+    },
+    document
+  )
 }
 
 export default useMousePositionRelativeToElement
