@@ -149,6 +149,6 @@ export const selectShape = (state: State, shapeId: string): State => {
     shapes: deselectedState.shapes.set(shapeId, { ...shape, isSelected: true })
   }
 }
-export function getSelectedShapes(state: State): Shape[] {
+export const getSelectedShapes = (state: State): Shape[] => {
   return state.shapes.values().filter(shape => shape.isSelected)
 }
