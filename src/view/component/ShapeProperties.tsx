@@ -1,4 +1,4 @@
-import { State } from '@/model/canvas'
+import { State } from '@/model/core'
 import { useStore } from '@/store'
 import React from 'react'
 

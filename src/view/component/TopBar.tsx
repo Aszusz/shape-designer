@@ -1,5 +1,5 @@
 import { Input } from '../ui/input'
-import { setCanvasHeight, setCanvasWidth, useStore } from '@/store'
+import { setCanvasSize, useStore } from '@/store'
 
 const TopBar = () => {
   const width = useStore(c => c.canvasSize.width)
@@ -13,13 +13,17 @@ const TopBar = () => {
       <Input
         className='w-20 h-7'
         value={width}
-        onChange={e => setCanvasWidth(parseInt(e.target.value))}
+        onChange={e =>
+          setCanvasSize({ width: parseInt(e.target.value), height })
+        }
       />
       <span>H:</span>
       <Input
         className='w-20 h-7'
         value={height}
-        onChange={e => setCanvasHeight(parseInt(e.target.value))}
+        onChange={e =>
+          setCanvasSize({ width, height: parseInt(e.target.value) })
+        }
       />
     </div>
   )
