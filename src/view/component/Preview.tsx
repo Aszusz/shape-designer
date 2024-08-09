@@ -1,4 +1,4 @@
-import { BoundingBox } from '@/model/canvas'
+import { BoundingBox } from '@/model/geometry'
 
 type PreviewProps = {
   preview: BoundingBox | null | undefined

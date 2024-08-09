@@ -1,14 +1,11 @@
+import { initialState, Shape, State, ToolType } from './model/canvas'
 import {
   boundingBox,
-  initialState,
   intersection,
-  isInCanvas,
-  limitToCanvas,
-  Point,
-  Shape,
-  State,
-  ToolType
-} from './model/canvas'
+  isIn,
+  limitTo,
+  Point
+} from './model/geometry'
 import { nanoid } from 'nanoid'
 import { create } from 'zustand'
 
@@ -53,14 +50,24 @@ export const setTool = (tool: ToolType) => {
 
 export const onMouseMove = (mousePosition: Point) => {
   useStore.setState(state => {
-    const adjustedPosition = limitToCanvas(mousePosition, state.canvasSize)
+    const adjustedPosition = limitTo(mousePosition, {
+      x: 0,
+      y: 0,
+      width: state.canvasSize.width,
+      height: state.canvasSize.height
+    })
     return { ...state, currentMousePosition: adjustedPosition }
   })
 }
 
 export const onMouseDown = (mousePosition: { x: number; y: number }) => {
   useStore.setState(state => {
-    return isInCanvas(mousePosition, state.canvasSize)
+    return isIn(mousePosition, {
+      x: 0,
+      y: 0,
+      width: state.canvasSize.width,
+      height: state.canvasSize.height
+    })
       ? { ...state, dragStart: mousePosition }
       : state
   })
