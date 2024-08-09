@@ -139,16 +139,20 @@ export const deselectAllShapes = (state: State): State => {
 }
 
 export const selectShape = (state: State, shapeId: string): State => {
-  const deselectedState = deselectAllShapes(state)
-  const shape = deselectedState.shapes.get(shapeId)
-  if (shape === undefined) {
-    return deselectedState
-  }
-  return {
-    ...deselectedState,
-    shapes: deselectedState.shapes.set(shapeId, { ...shape, isSelected: true })
-  }
+  const shapes = state.shapes.map(shape => ({
+    ...shape,
+    isSelected: shape.id === shapeId
+  }))
+  return { ...state, shapes }
 }
+
+export const toggleSelected = (state: State, shapeId: string): State => {
+  const shapes = state.shapes.map(shape =>
+    shape.id === shapeId ? { ...shape, isSelected: !shape.isSelected } : shape
+  )
+  return { ...state, shapes }
+}
+
 export const getSelectedShapes = (state: State): Shape[] => {
   return state.shapes.values().filter(shape => shape.isSelected)
 }

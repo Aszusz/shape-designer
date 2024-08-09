@@ -1,5 +1,5 @@
 import { cn } from '@/lib/cn'
-import { selectShape, useShape } from '@/store'
+import { toggleSelected, selectShape, useShape } from '@/store'
 import React from 'react'
 
 interface ShapeListItemProps {
@@ -17,7 +17,13 @@ const ShapeListItem: React.FC<ShapeListItemProps> = ({ id }) => {
         'bg-blue-200': shape.isSelected,
         'bg-transparent': !shape.isSelected
       })}
-      onClick={() => selectShape(id)}
+      onClick={e => {
+        if (e.ctrlKey) {
+          toggleSelected(id)
+        } else {
+          selectShape(id)
+        }
+      }}
     >
       <p>
         <strong>

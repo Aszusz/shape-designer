@@ -55,3 +55,7 @@ export const deselectAllShapes = () => {
 export const selectShape = (shapeId: string) => {
   useStore.setState(state => core.selectShape(state, shapeId))
 }
+
+export const toggleSelected = (shapeId: string) => {
+  useStore.setState(state => core.toggleSelected(state, shapeId))
+}
