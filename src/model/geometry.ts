@@ -58,3 +58,20 @@ export function intersection(
 
   return null
 }
+
+export const isContained = (
+  smaller: BoundingBox,
+  larger: BoundingBox
+): boolean => {
+  const smallerRight = smaller.x + smaller.width
+  const smallerBottom = smaller.y + smaller.height
+  const largerRight = larger.x + larger.width
+  const largerBottom = larger.y + larger.height
+
+  const isContainedHorizontally =
+    smaller.x >= larger.x && smallerRight <= largerRight
+  const isContainedVertically =
+    smaller.y >= larger.y && smallerBottom <= largerBottom
+
+  return isContainedHorizontally && isContainedVertically
+}

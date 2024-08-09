@@ -4,6 +4,7 @@ import {
   Size,
   boundingBox,
   intersection,
+  isContained,
   isIn,
   limitTo
 } from './geometry'
@@ -106,8 +107,46 @@ export const onMouseUp = (state: State): State => {
     return state
   }
 
-  if (state.toolType === PanTool || state.toolType === SelectTool) {
-    return { ...state, dragStart: undefined }
+  switch (state.toolType) {
+    case PanTool:
+      return handlePanTool(state)
+    case SelectTool:
+      return handleSelectTool(state)
+    case RectangleTool:
+      return handleShapeTool(state, RectangleShape)
+    case EllipseTool:
+      return handleShapeTool(state, EllipseShape)
+    default:
+      return state
+  }
+}
+
+const handlePanTool = (state: State): State => {
+  // Clear dragStart for PanTool
+  return { ...state, dragStart: undefined }
+}
+
+const handleSelectTool = (state: State): State => {
+  if (state.dragStart === undefined) {
+    return state
+  }
+  const allShapes = state.shapes
+
+  const bb = boundingBox(state.dragStart, state.currentMousePosition)
+
+  const newShapes = allShapes.map(shape =>
+    isContained(shape, bb)
+      ? { ...shape, isSelected: true }
+      : { ...shape, isSelected: false }
+  )
+
+  // Clear dragStart for SelectTool
+  return { ...state, dragStart: undefined, shapes: newShapes }
+}
+
+const handleShapeTool = (state: State, shapeType: ShapeType): State => {
+  if (state.dragStart === undefined) {
+    return state
   }
 
   const bb = boundingBox(state.dragStart, state.currentMousePosition)
@@ -118,7 +157,7 @@ export const onMouseUp = (state: State): State => {
 
   const newShape: Shape = {
     id: nanoid(),
-    type: state.toolType === RectangleTool ? RectangleShape : EllipseShape,
+    type: shapeType,
     isSelected: false,
     x: bb.x,
     y: bb.y,
