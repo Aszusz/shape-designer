@@ -1,5 +1,7 @@
+import { Input } from '../ui/input'
+import { Label } from '../ui/label'
 import { Shape } from '@/model/core'
-import { useSelectedShapes } from '@/store'
+import { updateShape, useSelectedShapes } from '@/store'
 import React from 'react'
 
 const ShapeProperties: React.FC = () => {
@@ -9,13 +11,68 @@ const ShapeProperties: React.FC = () => {
     return (
       <div>
         <div>
-          <strong>Type:</strong> {shape.type}
+          <strong>Type:</strong>{' '}
+          {shape.type === 'rectangle_shape'
+            ? 'Rectangle'
+            : shape.type === 'ellipse_shape'
+              ? 'Ellipse'
+              : 'Unknown'}
         </div>
+        <div className='h-5' />
         <div>
-          <strong>Position:</strong> ({shape.x}, {shape.y})
+          <strong>Position</strong>
+          <div className='flex flex-row w-full max-w-sm items-center gap-1.5'>
+            <Label htmlFor='x'>x: </Label>
+            <Input
+              className='w-20 h-7'
+              value={shape.x}
+              type='number'
+              id='x'
+              onChange={e => {
+                updateShape({ ...shape, x: parseInt(e.target.value) })
+              }}
+            />
+          </div>
+          <div className='flex flex-row w-full max-w-sm items-center gap-1.5'>
+            <Label htmlFor='x'>y: </Label>
+            <Input
+              className='w-20 h-7'
+              value={shape.y}
+              type='number'
+              id='y'
+              onChange={e => {
+                updateShape({ ...shape, y: parseInt(e.target.value) })
+              }}
+            />
+          </div>
         </div>
+        <div className='h-3' />
         <div>
-          <strong>Size:</strong> {shape.width} x {shape.height}
+          <strong>Size</strong>
+          <div className='flex flex-row w-full max-w-sm items-center gap-1.5'>
+            <Label htmlFor='x'>w: </Label>
+            <Input
+              className='w-20 h-7'
+              value={shape.width}
+              type='number'
+              id='width'
+              onChange={e => {
+                updateShape({ ...shape, width: parseInt(e.target.value) })
+              }}
+            />
+          </div>
+          <div className='flex flex-row w-full max-w-sm items-center gap-1.5'>
+            <Label htmlFor='x'>h: </Label>
+            <Input
+              className='w-20 h-7'
+              value={shape.height}
+              type='number'
+              id='height'
+              onChange={e => {
+                updateShape({ ...shape, height: parseInt(e.target.value) })
+              }}
+            />
+          </div>
         </div>
       </div>
     )

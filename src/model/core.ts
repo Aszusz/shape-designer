@@ -156,3 +156,7 @@ export const toggleSelected = (state: State, shapeId: string): State => {
 export const getSelectedShapes = (state: State): Shape[] => {
   return state.shapes.values().filter(shape => shape.isSelected)
 }
+
+export const updateShape = (state: State, shape: Shape): State => {
+  return { ...state, shapes: state.shapes.set(shape.id, shape) }
+}

@@ -59,3 +59,7 @@ export const selectShape = (shapeId: string) => {
 export const toggleSelected = (shapeId: string) => {
   useStore.setState(state => core.toggleSelected(state, shapeId))
 }
+
+export const updateShape = (shape: core.Shape) => {
+  useStore.setState(state => core.updateShape(state, shape))
+}
