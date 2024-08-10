@@ -1,11 +1,13 @@
+import { Button } from '../ui/button'
 import { Input } from '../ui/input'
 import { Label } from '../ui/label'
 import { Shape } from '@/model/core'
-import { updateShape, useSelectedShapes } from '@/store'
+import { deleteSelectedShapes, updateShape, useSelectedShapes } from '@/store'
 import React from 'react'
 
 const ShapeProperties: React.FC = () => {
   const selectedShapes = useSelectedShapes()
+  const selectedShapesCount = selectedShapes.length
 
   const renderShapeProperties = (shape: Shape) => {
     return (
@@ -73,6 +75,16 @@ const ShapeProperties: React.FC = () => {
               }}
             />
           </div>
+          <div className='h-3' />
+          <Button
+            variant={'destructive'}
+            size={'sm'}
+            onClick={() => {
+              deleteSelectedShapes()
+            }}
+          >
+            Delete
+          </Button>
         </div>
       </div>
     )
@@ -81,10 +93,22 @@ const ShapeProperties: React.FC = () => {
   return (
     <div className='flex-1'>
       <h2 className='font-bold mb-2'>Properties:</h2>
-      {selectedShapes.length === 0 ? (
+      {selectedShapesCount === 0 ? (
         <div>No shapes selected.</div>
       ) : selectedShapes.length > 1 ? (
-        <div>Multiple shapes selected.</div>
+        <div>
+          <p>{selectedShapesCount} shapes selected.</p>
+          <div className='h-3' />
+          <Button
+            variant={'destructive'}
+            size={'sm'}
+            onClick={() => {
+              deleteSelectedShapes()
+            }}
+          >
+            Delete All
+          </Button>
+        </div>
       ) : (
         renderShapeProperties(selectedShapes[0])
       )}

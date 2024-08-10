@@ -70,3 +70,7 @@ export const updateShape = (shape: core.Shape) => {
 export const setSnapToGridSetting = (snapToGrid: boolean) => {
   useStore.setState(state => core.setSnapToGridSetting(state, snapToGrid))
 }
+
+export const deleteSelectedShapes = () => {
+  useStore.setState(state => core.deleteSelectedShapes(state))
+}

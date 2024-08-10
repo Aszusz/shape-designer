@@ -260,3 +260,10 @@ export const setSnapToGridSetting = (
 ): State => {
   return { ...state, snapToGridSetting }
 }
+
+export const deleteSelectedShapes = (state: State): State => {
+  return {
+    ...state,
+    shapes: state.shapes.filter(shape => !shape.isSelected)
+  }
+}
