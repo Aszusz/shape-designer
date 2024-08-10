@@ -6,7 +6,8 @@ import {
   intersection,
   isContained,
   isIn,
-  limitTo
+  limitTo,
+  snapToGrid
 } from './geometry'
 import { ReadonlyOrderedRecord } from './readonlyOrderedRecord'
 import { nanoid } from 'nanoid'
@@ -83,24 +84,59 @@ export const setTool = (state: State, tool: ToolType): State => ({
 })
 
 export const onMouseMove = (state: State, mousePosition: Point): State => {
-  const adjustedPosition = limitTo(mousePosition, {
+  const canvas = {
     x: 0,
     y: 0,
     width: state.canvasSize.width,
     height: state.canvasSize.height
-  })
-  return { ...state, currentMousePosition: adjustedPosition }
+  }
+
+  const limitedPosition = limitTo(mousePosition, canvas)
+  const snappedPosition = snapToGrid(limitedPosition, 10)
+
+  switch (state.toolType) {
+    case PanTool:
+      return state
+    case SelectTool:
+      return { ...state, currentMousePosition: limitedPosition }
+    case RectangleTool: {
+      return { ...state, currentMousePosition: snappedPosition }
+    }
+    case EllipseTool: {
+      return { ...state, currentMousePosition: snappedPosition }
+    }
+    default:
+      return state
+  }
 }
 
-export const onMouseDown = (state: State, mousePosition: Point): State =>
-  isIn(mousePosition, {
+export const onMouseDown = (state: State, mousePosition: Point): State => {
+  const canvas = {
     x: 0,
     y: 0,
     width: state.canvasSize.width,
     height: state.canvasSize.height
-  })
-    ? { ...state, dragStart: mousePosition }
-    : state
+  }
+
+  if (!isIn(mousePosition, canvas)) {
+    return state
+  }
+
+  const snappedPosition = snapToGrid(mousePosition, 10)
+
+  switch (state.toolType) {
+    case PanTool:
+      return state
+    case SelectTool:
+      return { ...state, dragStart: mousePosition }
+    case RectangleTool:
+      return { ...state, dragStart: snappedPosition }
+    case EllipseTool:
+      return { ...state, dragStart: snappedPosition }
+    default:
+      return state
+  }
+}
 
 export const onMouseUp = (state: State): State => {
   if (state.dragStart === undefined) {

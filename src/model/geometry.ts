@@ -75,3 +75,9 @@ export const isContained = (
 
   return isContainedHorizontally && isContainedVertically
 }
+
+export const snapToGrid = (point: Point, gridSize: number): Point => {
+  const x = Math.round(point.x / gridSize) * gridSize
+  const y = Math.round(point.y / gridSize) * gridSize
+  return { x, y }
+}
