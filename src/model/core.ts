@@ -41,6 +41,7 @@ export type State = {
   readonly dragStart?: Point
   readonly currentMousePosition: Point
   readonly shapes: ReadonlyOrderedRecord<Shape>
+  readonly snapToGridSetting: boolean
 }
 
 export const initialState: State = {
@@ -48,7 +49,8 @@ export const initialState: State = {
   canvasSize: { width: 800, height: 600 },
   dragStart: undefined,
   currentMousePosition: { x: NaN, y: NaN },
-  shapes: new ReadonlyOrderedRecord()
+  shapes: new ReadonlyOrderedRecord(),
+  snapToGridSetting: false
 }
 
 // Selectors
@@ -100,10 +102,20 @@ export const onMouseMove = (state: State, mousePosition: Point): State => {
     case SelectTool:
       return { ...state, currentMousePosition: limitedPosition }
     case RectangleTool: {
-      return { ...state, currentMousePosition: snappedPosition }
+      return {
+        ...state,
+        currentMousePosition: state.snapToGridSetting
+          ? snappedPosition
+          : limitedPosition
+      }
     }
     case EllipseTool: {
-      return { ...state, currentMousePosition: snappedPosition }
+      return {
+        ...state,
+        currentMousePosition: state.snapToGridSetting
+          ? snappedPosition
+          : limitedPosition
+      }
     }
     default:
       return state
@@ -130,9 +142,15 @@ export const onMouseDown = (state: State, mousePosition: Point): State => {
     case SelectTool:
       return { ...state, dragStart: mousePosition }
     case RectangleTool:
-      return { ...state, dragStart: snappedPosition }
+      return {
+        ...state,
+        dragStart: state.snapToGridSetting ? snappedPosition : mousePosition
+      }
     case EllipseTool:
-      return { ...state, dragStart: snappedPosition }
+      return {
+        ...state,
+        dragStart: state.snapToGridSetting ? snappedPosition : mousePosition
+      }
     default:
       return state
   }
@@ -234,4 +252,11 @@ export const getSelectedShapes = (state: State): Shape[] => {
 
 export const updateShape = (state: State, shape: Shape): State => {
   return { ...state, shapes: state.shapes.set(shape.id, shape) }
+}
+
+export const setSnapToGridSetting = (
+  state: State,
+  snapToGridSetting: boolean
+): State => {
+  return { ...state, snapToGridSetting }
 }

@@ -26,6 +26,9 @@ export const useShape = (shapeId: string) =>
 export const useSelectedShapes = () =>
   useStore(state => core.getSelectedShapes(state))
 
+export const useSnapToGridSetting = () =>
+  useStore(state => state.snapToGridSetting)
+
 // Actions
 
 export const setCanvasSize = (size: Size) => {
@@ -62,4 +65,8 @@ export const toggleSelected = (shapeId: string) => {
 
 export const updateShape = (shape: core.Shape) => {
   useStore.setState(state => core.updateShape(state, shape))
+}
+
+export const setSnapToGridSetting = (snapToGrid: boolean) => {
+  useStore.setState(state => core.setSnapToGridSetting(state, snapToGrid))
 }
