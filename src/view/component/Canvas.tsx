@@ -1,8 +1,10 @@
+import useGlobalHotkey from '../hooks/useGlobalHotkey'
 import useRelativeMouseEvents from '../hooks/useRelativeMouseEvents'
 import Grid from './Grid'
 import Shape from './Shape'
 import ToolPreview from './ToolPreview'
 import {
+  deleteSelectedShapes,
   onMouseDown,
   onMouseMove,
   onMouseUp,
@@ -25,6 +27,10 @@ const Canvas = () => {
     pos => onMouseDown(pos),
     () => onMouseUp()
   )
+
+  useGlobalHotkey({ key: 'Delete' }, () => {
+    deleteSelectedShapes()
+  })
 
   console.log('Canvas render')
 
