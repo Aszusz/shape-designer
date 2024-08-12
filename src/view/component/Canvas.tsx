@@ -32,8 +32,6 @@ const Canvas = () => {
     deleteSelectedShapes()
   })
 
-  console.log('Canvas render')
-
   return (
     <svg
       style={{

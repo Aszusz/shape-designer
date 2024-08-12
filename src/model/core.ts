@@ -188,12 +188,15 @@ const handleSelectTool = (state: State): State => {
 
   const bb = boundingBox(state.dragStart, state.currentMousePosition)
 
+  if (bb.width < 5 || bb.height < 5) {
+    return { ...state, dragStart: undefined }
+  }
+
   const newShapes = allShapes.map(shape =>
     isContained(shape, bb)
       ? { ...shape, isSelected: true }
       : { ...shape, isSelected: false }
   )
-
   // Clear dragStart for SelectTool
   return { ...state, dragStart: undefined, shapes: newShapes }
 }
@@ -226,11 +229,6 @@ const handleShapeTool = (state: State, shapeType: ShapeType): State => {
   }
 }
 
-export const deselectAllShapes = (state: State): State => {
-  const shapes = state.shapes.map(shape => ({ ...shape, isSelected: false }))
-  return { ...state, shapes }
-}
-
 export const selectShape = (state: State, shapeId: string): State => {
   const shapes = state.shapes.map(shape => ({
     ...shape,
@@ -240,10 +238,11 @@ export const selectShape = (state: State, shapeId: string): State => {
 }
 
 export const toggleSelected = (state: State, shapeId: string): State => {
-  const shapes = state.shapes.map(shape =>
+  const oldShapes = state.shapes
+  const newShapes = oldShapes.map(shape =>
     shape.id === shapeId ? { ...shape, isSelected: !shape.isSelected } : shape
   )
-  return { ...state, shapes }
+  return { ...state, shapes: newShapes }
 }
 
 export const getSelectedShapes = (state: State): Shape[] => {
