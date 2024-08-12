@@ -1,5 +1,7 @@
 import useGlobalHotkey from '../hooks/useGlobalHotkey'
-import useRelativeMouseEvents from '../hooks/useRelativeMouseEvents'
+import useRelativeMouseDown from '../hooks/useRelativeMouseDown'
+import useRelativeMouseMove from '../hooks/useRelativeMouseMove'
+import useRelativeMouseUp from '../hooks/useRelativeMouseUp'
 import Grid from './Grid'
 import Shape from './Shape'
 import ToolPreview from './ToolPreview'
@@ -19,14 +21,17 @@ const Canvas = () => {
   const { width, height } = useCanvasSize()
   const shapeIds = useShapeIds()
 
-  useRelativeMouseEvents(
-    canvasRef,
-    position => {
-      onMouseMove(position)
-    },
-    pos => onMouseDown(pos),
-    () => onMouseUp()
-  )
+  useRelativeMouseUp((_x, _y, e) => {
+    onMouseUp(e.ctrlKey ? 'toggle' : 'replace')
+  }, canvasRef.current)
+
+  useRelativeMouseDown((x, y) => {
+    onMouseDown({ x, y })
+  }, canvasRef.current)
+
+  useRelativeMouseMove((x, y) => {
+    onMouseMove({ x, y })
+  }, canvasRef.current)
 
   useGlobalHotkey({ key: 'Delete' }, () => {
     deleteSelectedShapes()

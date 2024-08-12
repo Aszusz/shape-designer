@@ -158,7 +158,7 @@ export const onMouseDown = (state: State, mousePosition: Point): State => {
 
 export const onMouseUp = (
   state: State,
-  mode: SelectionToolMode = 'toggle'
+  mode: SelectionToolMode = 'replace'
 ): State => {
   if (state.dragStart === undefined) {
     return state

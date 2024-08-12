@@ -1,4 +1,5 @@
 import * as core from './model/core'
+import { SelectionToolMode } from './model/core'
 import { Point, Size } from './model/geometry'
 import { create } from 'zustand'
 
@@ -50,9 +51,9 @@ export const onMouseDown = (mousePosition: Point) => {
   useStore.setState(state => core.onMouseDown(state, mousePosition))
 }
 
-export const onMouseUp = () => {
+export const onMouseUp = (mode: SelectionToolMode) => {
   console.log('onMouseUp')
-  useStore.setState(state => core.onMouseUp(state))
+  useStore.setState(state => core.onMouseUp(state, mode))
 }
 
 export const selectShape = (shapeId: string) => {
