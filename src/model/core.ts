@@ -156,7 +156,10 @@ export const onMouseDown = (state: State, mousePosition: Point): State => {
   }
 }
 
-export const onMouseUp = (state: State): State => {
+export const onMouseUp = (
+  state: State,
+  mode: SelectionToolMode = 'toggle'
+): State => {
   if (state.dragStart === undefined) {
     return state
   }
@@ -165,7 +168,7 @@ export const onMouseUp = (state: State): State => {
     case PanTool:
       return handlePanTool(state)
     case SelectTool:
-      return handleSelectTool(state)
+      return handleSelectTool(state, mode)
     case RectangleTool:
       return handleShapeTool(state, RectangleShape)
     case EllipseTool:
@@ -180,25 +183,60 @@ const handlePanTool = (state: State): State => {
   return { ...state, dragStart: undefined }
 }
 
-const handleSelectTool = (state: State): State => {
-  if (state.dragStart === undefined) {
-    return state
-  }
-  const allShapes = state.shapes
+export type SelectionToolMode = 'replace' | 'toggle'
 
-  const bb = boundingBox(state.dragStart, state.currentMousePosition)
-
-  if (bb.width < 5 || bb.height < 5) {
-    return { ...state, dragStart: undefined }
+const handleSelectTool = (
+  currentState: State,
+  selectionMode: SelectionToolMode
+): State => {
+  if (currentState.dragStart === undefined) {
+    return currentState
   }
 
-  const newShapes = allShapes.map(shape =>
-    isContained(shape, bb)
-      ? { ...shape, isSelected: true }
-      : { ...shape, isSelected: false }
+  const shapes = currentState.shapes
+  const selectionBox = boundingBox(
+    currentState.dragStart,
+    currentState.currentMousePosition
   )
+
+  if (selectionBox.width < 1 || selectionBox.height < 1) {
+    // This is a click, not an area selection
+    const updatedShapes = shapes.map(shape => {
+      const isShapeSelected = isContained(selectionBox, shape)
+
+      if (selectionMode === 'replace') {
+        return { ...shape, isSelected: isShapeSelected }
+      } else if (selectionMode === 'toggle') {
+        return {
+          ...shape,
+          isSelected: isShapeSelected ? !shape.isSelected : shape.isSelected
+        }
+      } else {
+        return shape // Fallback to return the original shape if selectionMode is unexpected
+      }
+    })
+
+    return { ...currentState, shapes: updatedShapes, dragStart: undefined }
+  }
+
+  // Handle area selection
+  const updatedShapes = shapes.map(shape => {
+    const isShapeSelected = isContained(shape, selectionBox)
+
+    if (selectionMode === 'replace') {
+      return { ...shape, isSelected: isShapeSelected }
+    } else if (selectionMode === 'toggle') {
+      return {
+        ...shape,
+        isSelected: isShapeSelected ? !shape.isSelected : shape.isSelected
+      }
+    } else {
+      return shape // Fallback to return the original shape if selectionMode is unexpected
+    }
+  })
+
   // Clear dragStart for SelectTool
-  return { ...state, dragStart: undefined, shapes: newShapes }
+  return { ...currentState, dragStart: undefined, shapes: updatedShapes }
 }
 
 const handleShapeTool = (state: State, shapeType: ShapeType): State => {

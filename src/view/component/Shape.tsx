@@ -1,4 +1,4 @@
-import { selectShape, useShape } from '@/store'
+import { useShape } from '@/store'
 
 type ShapeViewProps = {
   shapeId: string
@@ -21,9 +21,6 @@ const Shape = ({ shapeId: shapeId }: ShapeViewProps) => {
         stroke={shape.isSelected ? 'blue' : 'black'}
         fill='white'
         strokeWidth={2}
-        onClick={() => {
-          selectShape(shapeId)
-        }}
       />
     )
   } else if (shape.type === 'ellipse_shape') {
@@ -36,9 +33,6 @@ const Shape = ({ shapeId: shapeId }: ShapeViewProps) => {
         stroke={shape.isSelected ? 'blue' : 'black'}
         fill='white'
         strokeWidth={2}
-        onClick={() => {
-          selectShape(shapeId)
-        }}
       />
     )
   }

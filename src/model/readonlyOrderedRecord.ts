@@ -87,4 +87,9 @@ export class ReadonlyOrderedRecord<T> {
     })
     return new ReadonlyOrderedRecord<T>(newData, newOrder)
   }
+
+  find(predicate: (value: T, key: string) => boolean): T | undefined {
+    const key = this.order.find(key => predicate(this.data[key], key))
+    return key ? this.data[key] : undefined
+  }
 }
