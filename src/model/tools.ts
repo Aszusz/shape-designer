@@ -1,5 +1,6 @@
-import { Shape, ShapeType, State } from './core'
-import { boundingBox, isContained } from './geometry'
+import { Shape, ShapeType } from './core'
+import { BoundingBox, isContained } from './geometry'
+import { ReadonlyOrderedRecord } from './readonlyOrderedRecord'
 import { nanoid } from 'nanoid'
 
 // Tool and Shape Constants
@@ -16,25 +17,18 @@ export type ToolType =
 
 export type SelectionToolMode = 'replace' | 'toggle'
 
-export const handlePanTool = (state: State): State => {
+export const handlePanTool = (
+  shapes: ReadonlyOrderedRecord<Shape>
+): ReadonlyOrderedRecord<Shape> => {
   // Clear dragStart for PanTool
-  return { ...state, dragStart: undefined }
+  return shapes
 }
 
 export const handleSelectTool = (
-  currentState: State,
+  shapes: ReadonlyOrderedRecord<Shape>,
+  selectionBox: BoundingBox,
   selectionMode: SelectionToolMode
-): State => {
-  if (currentState.dragStart === undefined) {
-    return currentState
-  }
-
-  const shapes = currentState.shapes
-  const selectionBox = boundingBox(
-    currentState.dragStart,
-    currentState.currentMousePosition
-  )
-
+): ReadonlyOrderedRecord<Shape> => {
   if (selectionBox.width < 1 || selectionBox.height < 1) {
     // This is a click, not an area selection
     const updatedShapes = shapes.map(shape => {
@@ -52,7 +46,7 @@ export const handleSelectTool = (
       }
     })
 
-    return { ...currentState, shapes: updatedShapes, dragStart: undefined }
+    return updatedShapes
   }
 
   // Handle area selection
@@ -72,33 +66,27 @@ export const handleSelectTool = (
   })
 
   // Clear dragStart for SelectTool
-  return { ...currentState, dragStart: undefined, shapes: updatedShapes }
+  return updatedShapes
 }
 
-export const handleShapeTool = (state: State, shapeType: ShapeType): State => {
-  if (state.dragStart === undefined) {
-    return state
-  }
-
-  const bb = boundingBox(state.dragStart, state.currentMousePosition)
-
-  if (bb.width < 5 || bb.height < 5) {
-    return { ...state, dragStart: undefined }
+export const handleShapeTool = (
+  shapes: ReadonlyOrderedRecord<Shape>,
+  shapeBox: BoundingBox,
+  shapeType: ShapeType
+): ReadonlyOrderedRecord<Shape> => {
+  if (shapeBox.width < 5 || shapeBox.height < 5) {
+    return shapes
   }
 
   const newShape: Shape = {
     id: nanoid(),
     type: shapeType,
     isSelected: false,
-    x: bb.x,
-    y: bb.y,
-    width: bb.width,
-    height: bb.height
+    x: shapeBox.x,
+    y: shapeBox.y,
+    width: shapeBox.width,
+    height: shapeBox.height
   }
 
-  return {
-    ...state,
-    dragStart: undefined,
-    shapes: state.shapes.set(newShape.id, newShape)
-  }
+  return shapes.set(newShape.id, newShape)
 }

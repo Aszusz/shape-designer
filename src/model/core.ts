@@ -161,17 +161,30 @@ export const onMouseUp = (
     return state
   }
 
+  const bb = boundingBox(state.dragStart, state.currentMousePosition)
+  let updatedShapes: ReadonlyOrderedRecord<Shape>
+
   switch (state.toolType) {
     case PanTool:
-      return handlePanTool(state)
+      updatedShapes = handlePanTool(state.shapes)
+      break
     case SelectTool:
-      return handleSelectTool(state, mode)
+      updatedShapes = handleSelectTool(state.shapes, bb, mode)
+      break
     case RectangleTool:
-      return handleShapeTool(state, RectangleShape)
+      updatedShapes = handleShapeTool(state.shapes, bb, RectangleShape)
+      break
     case EllipseTool:
-      return handleShapeTool(state, EllipseShape)
+      updatedShapes = handleShapeTool(state.shapes, bb, EllipseShape)
+      break
     default:
-      return state
+      updatedShapes = state.shapes
+  }
+
+  return {
+    ...state,
+    dragStart: undefined,
+    shapes: updatedShapes
   }
 }
 
