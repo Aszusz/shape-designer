@@ -1,6 +1,6 @@
 import * as core from './model/core'
-import { SelectionToolMode } from './model/core'
 import { Point, Size } from './model/geometry'
+import { SelectionToolMode, ToolType } from './model/tools'
 import { create } from 'zustand'
 
 const useStore = create(() => core.initialState)
@@ -37,7 +37,7 @@ export const setCanvasSize = (size: Size) => {
   useStore.setState(state => core.setCanvasSize(state, size))
 }
 
-export const setTool = (tool: core.ToolType) => {
+export const setTool = (tool: ToolType) => {
   console.log('setTool', tool)
   useStore.setState(state => core.setTool(state, tool))
 }
