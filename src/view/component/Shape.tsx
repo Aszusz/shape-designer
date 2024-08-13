@@ -13,7 +13,7 @@ const RESIZE_HANDLE_FILL_COLOR = 'white'
 // Stroke thickness and spacing constants
 const INNER_STROKE_THICKNESS = 2
 const OUTER_STROKE_THICKNESS = 2
-const STROKE_SPACING = 2 // Distance between the inner and outer borders
+const STROKE_SPACING = 8 // Distance between the inner and outer borders
 
 const Shape = ({ shapeId }: ShapeViewProps) => {
   const shape = useShape(shapeId)
@@ -22,7 +22,7 @@ const Shape = ({ shapeId }: ShapeViewProps) => {
     return <></>
   }
 
-  const handleSize = 8 // Size of the resize handles
+  const handleSize = 10 // Size of the resize handles
 
   // Helper function to render resize handles
   const renderHandles = () => {
@@ -30,7 +30,7 @@ const Shape = ({ shapeId }: ShapeViewProps) => {
 
     const halfHandleSize = handleSize / 2
     const handleOffset =
-      (OUTER_STROKE_THICKNESS + STROKE_SPACING) / 2 + halfHandleSize
+      OUTER_STROKE_THICKNESS + STROKE_SPACING + halfHandleSize - 1
 
     const handles = [
       // Corner handles
@@ -117,11 +117,11 @@ const Shape = ({ shapeId }: ShapeViewProps) => {
       <>
         {/* Outer blue border */}
         {shape.isSelected && (
-          <ellipse
-            cx={shape.x + shape.width / 2}
-            cy={shape.y + shape.height / 2}
-            rx={shape.width / 2 + STROKE_SPACING + OUTER_STROKE_THICKNESS / 2}
-            ry={shape.height / 2 + STROKE_SPACING + OUTER_STROKE_THICKNESS / 2}
+          <rect
+            x={shape.x - OUTER_STROKE_THICKNESS / 2 - STROKE_SPACING}
+            y={shape.y - OUTER_STROKE_THICKNESS / 2 - STROKE_SPACING}
+            width={shape.width + OUTER_STROKE_THICKNESS + 2 * STROKE_SPACING}
+            height={shape.height + OUTER_STROKE_THICKNESS + 2 * STROKE_SPACING}
             stroke={OUTER_STROKE_COLOR}
             fill='none'
             strokeWidth={OUTER_STROKE_THICKNESS}
