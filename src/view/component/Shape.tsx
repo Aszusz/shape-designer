@@ -4,36 +4,144 @@ type ShapeViewProps = {
   shapeId: string
 }
 
-const Shape = ({ shapeId: shapeId }: ShapeViewProps) => {
+// Extracted Constants
+const INNER_STROKE_COLOR = 'black'
+const OUTER_STROKE_COLOR = '#bae6fd'
+const RESIZE_HANDLE_STROKE_COLOR = '#bae6fd'
+const RESIZE_HANDLE_FILL_COLOR = 'white'
+
+// Stroke thickness and spacing constants
+const INNER_STROKE_THICKNESS = 2
+const OUTER_STROKE_THICKNESS = 2
+const STROKE_SPACING = 2 // Distance between the inner and outer borders
+
+const Shape = ({ shapeId }: ShapeViewProps) => {
   const shape = useShape(shapeId)
 
   if (!shape) {
     return <></>
   }
 
+  const handleSize = 8 // Size of the resize handles
+
+  // Helper function to render resize handles
+  const renderHandles = () => {
+    if (!shape.isSelected) return null
+
+    const halfHandleSize = handleSize / 2
+    const handleOffset =
+      (OUTER_STROKE_THICKNESS + STROKE_SPACING) / 2 + halfHandleSize
+
+    const handles = [
+      // Corner handles
+      { x: shape.x - handleOffset, y: shape.y - handleOffset }, // Top-left
+      {
+        x: shape.x + shape.width + handleOffset - handleSize,
+        y: shape.y - handleOffset
+      }, // Top-right
+      {
+        x: shape.x - handleOffset,
+        y: shape.y + shape.height + handleOffset - handleSize
+      }, // Bottom-left
+      {
+        x: shape.x + shape.width + handleOffset - handleSize,
+        y: shape.y + shape.height + handleOffset - handleSize
+      }, // Bottom-right
+
+      // Midpoint handles
+      {
+        x: shape.x + shape.width / 2 - halfHandleSize,
+        y: shape.y - handleOffset
+      }, // Top-middle
+      {
+        x: shape.x + shape.width / 2 - halfHandleSize,
+        y: shape.y + shape.height + handleOffset - handleSize
+      }, // Bottom-middle
+      {
+        x: shape.x - handleOffset,
+        y: shape.y + shape.height / 2 - halfHandleSize
+      }, // Left-middle
+      {
+        x: shape.x + shape.width + handleOffset - handleSize,
+        y: shape.y + shape.height / 2 - halfHandleSize
+      } // Right-middle
+    ]
+
+    return handles.map((handle, index) => (
+      <rect
+        key={index}
+        x={handle.x}
+        y={handle.y}
+        width={handleSize}
+        height={handleSize}
+        fill={RESIZE_HANDLE_FILL_COLOR}
+        stroke={RESIZE_HANDLE_STROKE_COLOR}
+        strokeWidth={1}
+      />
+    ))
+  }
+
   if (shape.type === 'rectangle_shape') {
     return (
-      <rect
-        x={shape.x}
-        y={shape.y}
-        width={shape.width}
-        height={shape.height}
-        stroke={shape.isSelected ? 'blue' : 'black'}
-        fill='white'
-        strokeWidth={2}
-      />
+      <>
+        {/* Outer blue border, rendered first so it appears behind the black border */}
+        {shape.isSelected && (
+          <rect
+            x={shape.x - OUTER_STROKE_THICKNESS / 2 - STROKE_SPACING}
+            y={shape.y - OUTER_STROKE_THICKNESS / 2 - STROKE_SPACING}
+            width={shape.width + OUTER_STROKE_THICKNESS + 2 * STROKE_SPACING}
+            height={shape.height + OUTER_STROKE_THICKNESS + 2 * STROKE_SPACING}
+            stroke={OUTER_STROKE_COLOR}
+            fill='none'
+            strokeWidth={OUTER_STROKE_THICKNESS}
+          />
+        )}
+
+        {/* Inner black border */}
+        <rect
+          x={shape.x}
+          y={shape.y}
+          width={shape.width}
+          height={shape.height}
+          stroke={INNER_STROKE_COLOR}
+          fill='white'
+          strokeWidth={INNER_STROKE_THICKNESS}
+        />
+
+        {/* Resize handles */}
+        {renderHandles()}
+      </>
     )
   } else if (shape.type === 'ellipse_shape') {
     return (
-      <ellipse
-        cx={shape.x + shape.width / 2} // Center x
-        cy={shape.y + shape.height / 2} // Center y
-        rx={shape.width / 2} // Radius x
-        ry={shape.height / 2} // Radius y
-        stroke={shape.isSelected ? 'blue' : 'black'}
-        fill='white'
-        strokeWidth={2}
-      />
+      <>
+        {/* Outer blue border */}
+        {shape.isSelected && (
+          <ellipse
+            cx={shape.x + shape.width / 2}
+            cy={shape.y + shape.height / 2}
+            rx={shape.width / 2 + STROKE_SPACING + OUTER_STROKE_THICKNESS / 2}
+            ry={shape.height / 2 + STROKE_SPACING + OUTER_STROKE_THICKNESS / 2}
+            stroke={OUTER_STROKE_COLOR}
+            fill='none'
+            strokeWidth={OUTER_STROKE_THICKNESS}
+          />
+        )}
+
+        {/* Inner black border */}
+        <ellipse
+          cx={shape.x + shape.width / 2}
+          cy={shape.y + shape.height / 2}
+          rx={shape.width / 2}
+          ry={shape.height / 2}
+          stroke={INNER_STROKE_COLOR}
+          fill='white'
+          strokeWidth={INNER_STROKE_THICKNESS}
+        />
+
+        {/* Resize handles */}
+        {renderHandles()}
+      </>
     )
   }
   return null
