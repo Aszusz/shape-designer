@@ -22,7 +22,7 @@ function useRelativeMouseMove(
         callbackRef.current(x, y, event)
       }
     },
-    element || window
+    document
   )
 }
 

@@ -22,7 +22,7 @@ function useRelativeMouseUp(
         callbackRef.current(x, y, event)
       }
     },
-    element || window
+    document
   )
 }
 
