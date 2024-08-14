@@ -96,19 +96,34 @@ const ShapeProperties: React.FC = () => {
                 <SelectValue placeholder='Select color' />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value='#ef4444' className='bg-red-500'>
+                <SelectItem
+                  value='#ef4444'
+                  className='bg-red-500 hover:!bg-red-500 focus:!bg-red-500'
+                >
                   Red
                 </SelectItem>
-                <SelectItem value='#22c55e' className='bg-green-500'>
+                <SelectItem
+                  value='#22c55e'
+                  className='bg-green-500 hover:!bg-green-500 focus:!bg-green-500'
+                >
                   Green
                 </SelectItem>
-                <SelectItem value='#eab308' className='bg-yellow-500'>
+                <SelectItem
+                  value='#eab308'
+                  className='bg-yellow-500 hover:!bg-yellow-500 focus:!bg-yellow-500'
+                >
                   Yellow
                 </SelectItem>
-                <SelectItem value='#3b82f6' className='bg-blue-500'>
+                <SelectItem
+                  value='#3b82f6'
+                  className='bg-blue-500 hover:!bg-blue-500 focus:!bg-blue-500'
+                >
                   Blue
                 </SelectItem>
-                <SelectItem value='#f97316' className='bg-orange-500'>
+                <SelectItem
+                  value='#f97316'
+                  className='bg-orange-500 hover:!bg-orange-500 focus:!bg-orange-500'
+                >
                   Orange
                 </SelectItem>
               </SelectContent>
