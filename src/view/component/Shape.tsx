@@ -77,6 +77,7 @@ const Shape = ({ shapeId }: ShapeViewProps) => {
         fill={RESIZE_HANDLE_FILL_COLOR}
         stroke={RESIZE_HANDLE_STROKE_COLOR}
         strokeWidth={1}
+        color={shape.color}
       />
     ))
   }
@@ -104,7 +105,7 @@ const Shape = ({ shapeId }: ShapeViewProps) => {
           width={shape.width}
           height={shape.height}
           stroke={INNER_STROKE_COLOR}
-          fill='white'
+          fill={shape.color ? shape.color : 'white'}
           strokeWidth={INNER_STROKE_THICKNESS}
         />
 
@@ -135,7 +136,7 @@ const Shape = ({ shapeId }: ShapeViewProps) => {
           rx={shape.width / 2}
           ry={shape.height / 2}
           stroke={INNER_STROKE_COLOR}
-          fill='white'
+          fill={shape.color ? shape.color : 'white'}
           strokeWidth={INNER_STROKE_THICKNESS}
         />
 

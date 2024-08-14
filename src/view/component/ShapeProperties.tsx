@@ -1,6 +1,13 @@
 import { Button } from '../ui/button'
 import { Input } from '../ui/input'
 import { Label } from '../ui/label'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from '../ui/select'
 import { Shape } from '@/model/core'
 import { deleteSelectedShapes, updateShape, useSelectedShapes } from '@/store'
 import React from 'react'
@@ -21,7 +28,7 @@ const ShapeProperties: React.FC = () => {
               : 'Unknown'}
         </div>
         <div className='h-5' />
-        <div>
+        <div className='flex flex-col gap-1'>
           <strong>Position</strong>
           <div className='flex flex-row w-full max-w-sm items-center gap-1.5'>
             <Label htmlFor='x'>x: </Label>
@@ -49,7 +56,7 @@ const ShapeProperties: React.FC = () => {
           </div>
         </div>
         <div className='h-3' />
-        <div>
+        <div className='flex flex-col gap-1'>
           <strong>Size</strong>
           <div className='flex flex-row w-full max-w-sm items-center gap-1.5'>
             <Label htmlFor='x'>w: </Label>
@@ -75,7 +82,41 @@ const ShapeProperties: React.FC = () => {
               }}
             />
           </div>
-          <div className='h-3' />
+        </div>
+        <div className='h-3' />
+        <div className='flex flex-col gap-1'>
+          <strong>Colors</strong>
+          <div className='flex flex-row w-full max-w-sm items-center gap-1.5'>
+            <Select
+              onValueChange={value => {
+                updateShape({ ...shape, color: value })
+              }}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder='Select color' />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value='#ef4444' className='bg-red-500'>
+                  Red
+                </SelectItem>
+                <SelectItem value='#22c55e' className='bg-green-500'>
+                  Green
+                </SelectItem>
+                <SelectItem value='#eab308' className='bg-yellow-500'>
+                  Yellow
+                </SelectItem>
+                <SelectItem value='#3b82f6' className='bg-blue-500'>
+                  Blue
+                </SelectItem>
+                <SelectItem value='#f97316' className='bg-orange-500'>
+                  Orange
+                </SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+        <div className='h-3' />
+        <div>
           <Button
             variant={'destructive'}
             size={'sm'}
