@@ -6,6 +6,7 @@ type ShapeViewProps = {
 }
 
 const INNER_STROKE_COLOR = 'black'
+const FILL_COLOR = 'white'
 const INNER_STROKE_THICKNESS = 2
 
 const Shape = ({ shapeId }: ShapeViewProps) => {
@@ -27,8 +28,8 @@ const Shape = ({ shapeId }: ShapeViewProps) => {
           y={shape.y}
           width={shape.width}
           height={shape.height}
-          stroke={INNER_STROKE_COLOR}
-          fill={shape.color ? shape.color : 'white'}
+          stroke={shape.borderColor ? shape.borderColor : INNER_STROKE_COLOR}
+          fill={shape.color ? shape.color : FILL_COLOR}
           strokeWidth={INNER_STROKE_THICKNESS}
         />
       ) : shape.type === 'ellipse_shape' ? (
@@ -37,8 +38,8 @@ const Shape = ({ shapeId }: ShapeViewProps) => {
           cy={shape.y + shape.height / 2}
           rx={shape.width / 2}
           ry={shape.height / 2}
-          stroke={INNER_STROKE_COLOR}
-          fill={shape.color ? shape.color : 'white'}
+          stroke={shape.borderColor ? shape.borderColor : INNER_STROKE_COLOR}
+          fill={shape.color ? shape.color : FILL_COLOR}
           strokeWidth={INNER_STROKE_THICKNESS}
         />
       ) : null}

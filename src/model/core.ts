@@ -28,6 +28,7 @@ export type ShapeType = typeof RectangleShape | typeof EllipseShape
 
 export type ShapeColor = {
   readonly color: string
+  readonly borderColor: string
 }
 
 export type Shape = {

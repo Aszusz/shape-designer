@@ -8,7 +8,7 @@ import {
   SelectTrigger,
   SelectValue
 } from '../ui/select'
-import { Shape } from '@/model/core'
+import { Shape, ShapeColor } from '@/model/core'
 import { deleteSelectedShapes, updateShape, useSelectedShapes } from '@/store'
 import React from 'react'
 
@@ -89,7 +89,12 @@ const ShapeProperties: React.FC = () => {
           <div className='flex flex-row w-full max-w-sm items-center gap-1.5'>
             <Select
               onValueChange={value => {
-                updateShape({ ...shape, color: value })
+                const shapeColor: ShapeColor = JSON.parse(value)
+                updateShape({
+                  ...shape,
+                  color: shapeColor.color,
+                  borderColor: shapeColor.borderColor
+                })
               }}
             >
               <SelectTrigger>
@@ -97,31 +102,46 @@ const ShapeProperties: React.FC = () => {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem
-                  value='#ef4444'
-                  className='bg-red-500 hover:!bg-red-500 focus:!bg-red-500'
+                  value={JSON.stringify({
+                    color: '#ef4444',
+                    borderColor: '#fca5a5'
+                  })}
+                  className='bg-red-50 hover:!bg-red-500 focus:!bg-red-500'
                 >
                   Red
                 </SelectItem>
                 <SelectItem
-                  value='#22c55e'
+                  value={JSON.stringify({
+                    color: '#22c55e',
+                    borderColor: '#86efac'
+                  })}
                   className='bg-green-500 hover:!bg-green-500 focus:!bg-green-500'
                 >
                   Green
                 </SelectItem>
                 <SelectItem
-                  value='#eab308'
+                  value={JSON.stringify({
+                    color: '#eab308',
+                    borderColor: '#facc15'
+                  })}
                   className='bg-yellow-500 hover:!bg-yellow-500 focus:!bg-yellow-500'
                 >
                   Yellow
                 </SelectItem>
                 <SelectItem
-                  value='#3b82f6'
+                  value={JSON.stringify({
+                    color: '#3b82f6',
+                    borderColor: '#93c5fd'
+                  })}
                   className='bg-blue-500 hover:!bg-blue-500 focus:!bg-blue-500'
                 >
                   Blue
                 </SelectItem>
                 <SelectItem
-                  value='#f97316'
+                  value={JSON.stringify({
+                    color: '#f97316',
+                    borderColor: '#fdba74'
+                  })}
                   className='bg-orange-500 hover:!bg-orange-500 focus:!bg-orange-500'
                 >
                   Orange
