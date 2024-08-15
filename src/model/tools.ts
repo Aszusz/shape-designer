@@ -85,7 +85,8 @@ export const handleShapeTool = (
     x: shapeBox.x,
     y: shapeBox.y,
     width: shapeBox.width,
-    height: shapeBox.height
+    height: shapeBox.height,
+    color: '#ffffff'
   }
 
   return shapes.set(newShape.id, newShape)

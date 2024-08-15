@@ -9,11 +9,7 @@ export type Size = {
   readonly height: number
 }
 
-export type ShapeColor = {
-  readonly color: string
-}
-
-export type BoundingBox = Point & Size & ShapeColor
+export type BoundingBox = Point & Size
 
 export function isIn(point: Point, box: BoundingBox): boolean {
   return (

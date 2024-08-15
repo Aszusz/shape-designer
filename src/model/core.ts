@@ -26,11 +26,16 @@ export const EllipseShape = 'ellipse_shape'
 
 export type ShapeType = typeof RectangleShape | typeof EllipseShape
 
+export type ShapeColor = {
+  readonly color: string
+}
+
 export type Shape = {
   readonly id: string
   readonly type: ShapeType
   readonly isSelected: boolean
-} & BoundingBox
+} & BoundingBox &
+  ShapeColor
 
 export type State = {
   readonly toolType: ToolType
