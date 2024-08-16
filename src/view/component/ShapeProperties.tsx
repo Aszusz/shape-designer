@@ -106,7 +106,7 @@ const ShapeProperties: React.FC = () => {
                     color: '#ef4444',
                     borderColor: '#fca5a5'
                   })}
-                  className='bg-red-50 hover:!bg-red-500 focus:!bg-red-500'
+                  className='bg-red-500 hover:bg-red-500 focus:bg-red-500'
                 >
                   Red
                 </SelectItem>
@@ -115,7 +115,7 @@ const ShapeProperties: React.FC = () => {
                     color: '#22c55e',
                     borderColor: '#86efac'
                   })}
-                  className='bg-green-500 hover:!bg-green-500 focus:!bg-green-500'
+                  className='bg-green-500 hover:bg-green-500 focus:bg-green-500'
                 >
                   Green
                 </SelectItem>
@@ -124,7 +124,7 @@ const ShapeProperties: React.FC = () => {
                     color: '#eab308',
                     borderColor: '#facc15'
                   })}
-                  className='bg-yellow-500 hover:!bg-yellow-500 focus:!bg-yellow-500'
+                  className='bg-yellow-500 hover:bg-yellow-500 focus:bg-yellow-500'
                 >
                   Yellow
                 </SelectItem>
@@ -133,7 +133,7 @@ const ShapeProperties: React.FC = () => {
                     color: '#3b82f6',
                     borderColor: '#93c5fd'
                   })}
-                  className='bg-blue-500 hover:!bg-blue-500 focus:!bg-blue-500'
+                  className='bg-blue-500 hover:bg-blue-500 focus:bg-blue-500'
                 >
                   Blue
                 </SelectItem>
@@ -142,7 +142,7 @@ const ShapeProperties: React.FC = () => {
                     color: '#f97316',
                     borderColor: '#fdba74'
                   })}
-                  className='bg-orange-500 hover:!bg-orange-500 focus:!bg-orange-500'
+                  className='bg-orange-500 hover:bg-orange-500 focus:bg-orange-500'
                 >
                   Orange
                 </SelectItem>

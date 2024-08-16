@@ -78,10 +78,15 @@ export const handleShapeTool = (
     return shapes
   }
 
+  const deselectedShapes = shapes.map(shape => ({
+    ...shape,
+    isSelected: false
+  }))
+
   const newShape: Shape = {
     id: nanoid(),
     type: shapeType,
-    isSelected: false,
+    isSelected: true,
     x: shapeBox.x,
     y: shapeBox.y,
     width: shapeBox.width,
@@ -90,5 +95,5 @@ export const handleShapeTool = (
     borderColor: '#000000'
   }
 
-  return shapes.set(newShape.id, newShape)
+  return deselectedShapes.set(newShape.id, newShape)
 }
