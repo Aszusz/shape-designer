@@ -5,21 +5,16 @@ import useRelativeMouseUp from '../hooks/useRelativeMouseUp'
 import Grid from './Grid'
 import Shape from './Shape'
 import ToolPreview from './ToolPreview'
-import {
-  deleteSelectedShapes,
-  onMouseDown,
-  onMouseMove,
-  onMouseUp,
-  useCanvasSize,
-  useShapeIds
-} from '@/store'
+import { useStore } from '@/shell/store'
 import { useRef } from 'react'
 
 const Canvas = () => {
   const canvasRef = useRef(null)
 
-  const { width, height } = useCanvasSize()
-  const shapeIds = useShapeIds()
+  const { width, height } = useStore(state => state.canvasSize)
+  const shapeIds = useStore().getShapeIds()
+  const { onMouseDown, onMouseMove, onMouseUp, deleteSelectedShapes } =
+    useStore()
 
   useRelativeMouseUp((_x, _y, e) => {
     onMouseUp(e.ctrlKey ? 'toggle' : 'replace')

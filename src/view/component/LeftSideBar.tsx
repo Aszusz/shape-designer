@@ -1,5 +1,5 @@
 import { Button } from '../ui/button'
-import { setTool, useToolType } from '@/store'
+import { useStore } from '@/shell/store'
 import {
   Tooltip,
   TooltipContent,
@@ -8,11 +8,8 @@ import {
 } from '@/view/ui/tooltip'
 
 const LeftSideBar = () => {
-  const selectedTool = useToolType()
-  const setSelectTool = () => setTool('select_tool')
-  const setPanTool = () => setTool('pan_tool')
-  const setRectangleTool = () => setTool('rectangle_tool')
-  const setEllipseTool = () => setTool('ellipse_tool')
+  const selectedTool = useStore(state => state.toolType)
+  const setTool = useStore().setTool
 
   return (
     <div className='border-r border-gray-200 flex flex-col p-2 gap-2'>
@@ -22,7 +19,7 @@ const LeftSideBar = () => {
             <Button
               variant={selectedTool === 'select_tool' ? 'outline' : 'ghost'}
               size='icon'
-              onClick={setSelectTool}
+              onClick={() => setTool('select_tool')}
             >
               <MousePointerIcon className='w-5 h-5' />
               <span className='sr-only'>Select</span>
@@ -35,7 +32,7 @@ const LeftSideBar = () => {
             <Button
               variant={selectedTool === 'pan_tool' ? 'outline' : 'ghost'}
               size='icon'
-              onClick={setPanTool}
+              onClick={() => setTool('pan_tool')}
             >
               <MoveIcon className='w-5 h-5' />
               <span className='sr-only'>Pan</span>
@@ -48,7 +45,7 @@ const LeftSideBar = () => {
             <Button
               variant={selectedTool === 'rectangle_tool' ? 'outline' : 'ghost'}
               size='icon'
-              onClick={setRectangleTool}
+              onClick={() => setTool('rectangle_tool')}
             >
               <SquareIcon className='w-5 h-5' />
               <span className='sr-only'>Draw Rectangle</span>
@@ -61,7 +58,7 @@ const LeftSideBar = () => {
             <Button
               variant={selectedTool === 'ellipse_tool' ? 'outline' : 'ghost'}
               size='icon'
-              onClick={setEllipseTool}
+              onClick={() => setTool('ellipse_tool')}
             >
               <CircleIcon className='w-5 h-5' />
               <span className='sr-only'>Draw Ellipse</span>

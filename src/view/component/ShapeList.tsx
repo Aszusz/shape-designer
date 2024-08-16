@@ -1,11 +1,11 @@
 import ShapeListItem from './ShapeListItem'
-import { useShapeIds } from '@/store'
+import { useStore } from '@/shell/store'
 import React from 'react'
 
 // Import the ShapeListItem component
 
 const ShapeList: React.FC = () => {
-  const shapesIds = useShapeIds()
+  const shapesIds = useStore().getShapeIds()
 
   return (
     <div className='h-full flex flex-col'>

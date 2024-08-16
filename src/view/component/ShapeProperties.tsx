@@ -9,12 +9,13 @@ import {
   SelectValue
 } from '../ui/select'
 import { Shape, ShapeColor } from '@/model/core'
-import { deleteSelectedShapes, updateShape, useSelectedShapes } from '@/store'
+import { useStore } from '@/shell/store'
 import React from 'react'
 
 const ShapeProperties: React.FC = () => {
-  const selectedShapes = useSelectedShapes()
+  const selectedShapes = useStore().getSelectedShapes()
   const selectedShapesCount = selectedShapes.length
+  const { deleteSelectedShapes, updateShape } = useStore()
 
   const renderShapeProperties = (shape: Shape) => {
     return (

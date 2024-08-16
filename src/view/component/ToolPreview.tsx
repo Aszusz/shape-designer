@@ -1,8 +1,8 @@
-import { useToolPreview, useToolType } from '@/store'
+import { useStore } from '@/shell/store'
 
 const ToolPreview = () => {
-  const toolType = useToolType()
-  const toolPreview = useToolPreview()
+  const toolType = useStore(state => state.toolType)
+  const toolPreview = useStore().getToolPreview()
 
   if (!toolPreview) return null
 

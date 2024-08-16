@@ -1,15 +1,12 @@
 import { Input } from '../ui/input'
-import {
-  setCanvasSize,
-  setSnapToGridSetting,
-  useCanvasSize,
-  useSnapToGridSetting
-} from '@/store'
+import { useStore } from '@/shell/store'
 import { Checkbox } from '@/view/ui/checkbox'
 
 const TopBar = () => {
-  const { width, height } = useCanvasSize()
-  const snapToGrid = useSnapToGridSetting()
+  const { width, height } = useStore(state => state.canvasSize)
+  const snapToGrid = useStore(state => state.snapToGridSetting)
+  const setCanvasSize = useStore().setCanvasSize
+  const setSnapToGridSetting = useStore().setSnapToGridSetting
 
   return (
     <div className='col-span-3 border-b border-gray-200 flex flex-row p-2 gap-2'>

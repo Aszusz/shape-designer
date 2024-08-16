@@ -1,5 +1,5 @@
 import { Shape } from '@/model/core'
-import { useShape, updateShape } from '@/store'
+import { useStore } from '@/shell/store'
 import React, { useCallback, useRef } from 'react'
 
 type ShapeSelectionBoxProps = {
@@ -18,6 +18,8 @@ const useResize = (shape: Shape) => {
   const handleIndexRef = useRef<number | null>(null)
   const startXRef = useRef<number | null>(null)
   const startYRef = useRef<number | null>(null)
+
+  const updateShape = useStore().updateShape
 
   const handleMouseDown =
     (index: number) => (event: React.MouseEvent<SVGRectElement>) => {
@@ -99,7 +101,7 @@ const useResize = (shape: Shape) => {
 }
 
 const ShapeSelectionBox = ({ shapeId }: ShapeSelectionBoxProps) => {
-  const shape = useShape(shapeId)
+  const shape = useStore().getShape(shapeId)
 
   const memoizedUseResize = useCallback(useResize, [])
 

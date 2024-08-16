@@ -1,8 +1,8 @@
-import { useMousePosition, useToolType } from '@/store'
+import { useStore } from '@/shell/store'
 
 const StatusBar = () => {
-  const tool = useToolType()
-  const mousePosition = useMousePosition()
+  const tool = useStore(state => state.toolType)
+  const mousePosition = useStore(state => state.currentMousePosition)
 
   return (
     <div className='col-span-3 border-t border-gray-200 flex flex-row gap-3'>

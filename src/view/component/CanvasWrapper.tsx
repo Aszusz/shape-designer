@@ -1,12 +1,12 @@
 import useDynamicPadding from '../hooks/useDynamicPadding'
 import Canvas from './Canvas'
-import { useCanvasBorderSize } from '@/store'
+import { useStore } from '@/shell/store'
 import { useRef } from 'react'
 
 const CanvasWrapper = () => {
   const scrollRef = useRef<HTMLDivElement>(null)
   const padding = useDynamicPadding(scrollRef)
-  const { width } = useCanvasBorderSize()
+  const { width } = useStore().getCanvasBorderSize()
 
   return (
     <div ref={scrollRef} className='overflow-auto border-gray-200'>

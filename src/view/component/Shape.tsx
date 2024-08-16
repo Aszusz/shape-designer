@@ -1,5 +1,5 @@
 import ShapeSelectionBox from './ShapeSelectionBox'
-import { useShape } from '@/store'
+import { useStore } from '@/shell/store'
 
 type ShapeViewProps = {
   shapeId: string
@@ -10,7 +10,7 @@ const FILL_COLOR = 'white'
 const INNER_STROKE_THICKNESS = 2
 
 const Shape = ({ shapeId }: ShapeViewProps) => {
-  const shape = useShape(shapeId)
+  const shape = useStore().getShape(shapeId)
 
   if (!shape) {
     return <></>

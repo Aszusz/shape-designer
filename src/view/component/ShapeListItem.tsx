@@ -1,5 +1,5 @@
 import { cn } from '@/lib/cn'
-import { toggleSelected, selectShape, useShape } from '@/store'
+import { useStore } from '@/shell/store'
 import React from 'react'
 
 interface ShapeListItemProps {
@@ -7,7 +7,9 @@ interface ShapeListItemProps {
 }
 
 const ShapeListItem: React.FC<ShapeListItemProps> = ({ id }) => {
-  const shape = useShape(id)
+  const shape = useStore().getShape(id)
+  const selectShape = useStore().selectShape
+  const toggleSelected = useStore().toggleSelected
 
   return shape === undefined ? (
     <></>
