@@ -38,13 +38,24 @@ export type Shape = {
 } & BoundingBox &
   ShapeColor
 
-export type State = {
-  readonly toolType: ToolType
+export type PersistentState = {
   readonly canvasSize: Size
-  readonly dragStart?: Point
-  readonly currentMousePosition: Point
   readonly shapes: ReadonlyOrderedRecord<Shape>
   readonly snapToGridSetting: boolean
+}
+
+export type VolatileState = {
+  readonly toolType: ToolType
+  readonly dragStart?: Point
+  readonly currentMousePosition: Point
+}
+
+export type State = PersistentState & VolatileState
+
+const persistentKeys = ['canvasSize', 'shapes', 'snapToGridSetting'] as const
+
+export function narrowToPersistentState(state: State) {
+  return Object.fromEntries(persistentKeys.map(key => [key, state[key]]))
 }
 
 export const initialState: State = {

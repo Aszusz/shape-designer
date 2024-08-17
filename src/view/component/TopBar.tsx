@@ -7,6 +7,7 @@ import {
   DropdownMenuTrigger
 } from '../ui/dropdown-menu'
 import { Input } from '../ui/input'
+import { narrowToPersistentState } from '@/model/core'
 import { getFullState, useStore } from '@/shell/store'
 import { Checkbox } from '@/view/ui/checkbox'
 
@@ -86,8 +87,11 @@ const TopBar = () => {
   }
 
   const handleSaveClick = () => {
+    const fullState = getFullState()
+    const persistentState = narrowToPersistentState(fullState)
+    const content = JSON.stringify(persistentState, null, 2)
     downloadFile({
-      content: JSON.stringify(getFullState(), null, 2),
+      content,
       filename: 'shapes.json',
       fileType: 'application/json'
     })
