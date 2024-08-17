@@ -1,3 +1,4 @@
+import { useFileDownload } from '../hooks/useFileDownload'
 import { Button } from '../ui/button'
 import {
   DropdownMenu,
@@ -6,7 +7,7 @@ import {
   DropdownMenuTrigger
 } from '../ui/dropdown-menu'
 import { Input } from '../ui/input'
-import { useStore } from '@/shell/store'
+import { getFullState, useStore } from '@/shell/store'
 import { Checkbox } from '@/view/ui/checkbox'
 
 const TopBar = () => {
@@ -14,6 +15,8 @@ const TopBar = () => {
   const snapToGrid = useStore(state => state.snapToGridSetting)
   const setCanvasSize = useStore().setCanvasSize
   const setSnapToGridSetting = useStore().setSnapToGridSetting
+
+  const downloadFile = useFileDownload()
 
   type ClassProps = {
     className?: string
@@ -82,8 +85,22 @@ const TopBar = () => {
     )
   }
 
+  const handleSaveClick = () => {
+    downloadFile({
+      content: JSON.stringify(getFullState(), null, 2),
+      filename: 'shapes.json',
+      fileType: 'application/json'
+    })
+  }
+
   return (
     <div className='col-span-3 border-b border-gray-200 flex flex-row items-center p-2 gap-4'>
+      <input
+        type='file'
+        id='fileInput'
+        style={{ display: 'none' }}
+        onChange={() => {}}
+      />
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button
@@ -96,11 +113,13 @@ const TopBar = () => {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align='end' className='w-48'>
-          <DropdownMenuItem>
+          <DropdownMenuItem onClick={() => handleSaveClick()}>
             <SaveIcon className='mr-2 h-4 w-4' />
             Save to File
           </DropdownMenuItem>
-          <DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={() => document.getElementById('fileInput')?.click()}
+          >
             <UploadIcon className='mr-2 h-4 w-4' />
             Load from File
           </DropdownMenuItem>

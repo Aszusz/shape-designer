@@ -86,3 +86,5 @@ export const useStore = create<IStore>()(
     }
   }))
 )
+
+export const getFullState = () => useStore.getState()
