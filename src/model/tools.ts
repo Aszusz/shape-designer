@@ -1,6 +1,7 @@
 import { Shape, ShapeType } from './core'
 import { BoundingBox, isContained } from './geometry'
 import { ReadonlyOrderedRecord } from './readonlyOrderedRecord'
+import * as record from './readonlyOrderedRecord'
 import { nanoid } from 'nanoid'
 
 // Tool and Shape Constants
@@ -31,7 +32,7 @@ export const handleSelectTool = (
 ): ReadonlyOrderedRecord<Shape> => {
   if (selectionBox.width < 1 || selectionBox.height < 1) {
     // This is a click, not an area selection
-    const updatedShapes = shapes.map(shape => {
+    const updatedShapes = record.map(shapes, shape => {
       const isShapeSelected = isContained(selectionBox, shape)
 
       if (selectionMode === 'replace') {
@@ -50,7 +51,7 @@ export const handleSelectTool = (
   }
 
   // Handle area selection
-  const updatedShapes = shapes.map(shape => {
+  const updatedShapes = record.map(shapes, shape => {
     const isShapeSelected = isContained(shape, selectionBox)
 
     if (selectionMode === 'replace') {
@@ -78,7 +79,7 @@ export const handleShapeTool = (
     return shapes
   }
 
-  const deselectedShapes = shapes.map(shape => ({
+  const deselectedShapes = record.map(shapes, shape => ({
     ...shape,
     isSelected: false
   }))
@@ -95,5 +96,5 @@ export const handleShapeTool = (
     borderColor: '#000000'
   }
 
-  return deselectedShapes.set(newShape.id, newShape)
+  return record.set(deselectedShapes, newShape.id, newShape)
 }

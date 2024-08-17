@@ -30,4 +30,5 @@ export interface IStore {
   updateShape: (shape: core.Shape) => void
   setSnapToGridSetting: (snapToGrid: boolean) => void
   deleteSelectedShapes: () => void
+  load: (state: core.PersistentState) => void
 }

@@ -8,7 +8,14 @@ import {
   limitTo,
   snapToGrid
 } from './geometry'
-import { ReadonlyOrderedRecord } from './readonlyOrderedRecord'
+import {
+  createReadonlyOrderedRecord,
+  filter,
+  map,
+  ReadonlyOrderedRecord,
+  set,
+  values
+} from './readonlyOrderedRecord'
 import {
   EllipseTool,
   handlePanTool,
@@ -63,7 +70,7 @@ export const initialState: State = {
   canvasSize: { width: 800, height: 600 },
   dragStart: undefined,
   currentMousePosition: { x: NaN, y: NaN },
-  shapes: new ReadonlyOrderedRecord(),
+  shapes: createReadonlyOrderedRecord<Shape>(),
   snapToGridSetting: false
 }
 
@@ -206,7 +213,7 @@ export const onMouseUp = (
 }
 
 export const selectShape = (state: State, shapeId: string): State => {
-  const shapes = state.shapes.map(shape => ({
+  const shapes = map(state.shapes, shape => ({
     ...shape,
     isSelected: shape.id === shapeId
   }))
@@ -215,18 +222,18 @@ export const selectShape = (state: State, shapeId: string): State => {
 
 export const toggleSelected = (state: State, shapeId: string): State => {
   const oldShapes = state.shapes
-  const newShapes = oldShapes.map(shape =>
+  const newShapes = map(oldShapes, shape =>
     shape.id === shapeId ? { ...shape, isSelected: !shape.isSelected } : shape
   )
   return { ...state, shapes: newShapes }
 }
 
 export const getSelectedShapes = (state: State): Shape[] => {
-  return state.shapes.values().filter(shape => shape.isSelected)
+  return values(state.shapes).filter(shape => shape.isSelected)
 }
 
 export const updateShape = (state: State, shape: Shape): State => {
-  return { ...state, shapes: state.shapes.set(shape.id, shape) }
+  return { ...state, shapes: set(state.shapes, shape.id, shape) }
 }
 
 export const setSnapToGridSetting = (
@@ -239,6 +246,6 @@ export const setSnapToGridSetting = (
 export const deleteSelectedShapes = (state: State): State => {
   return {
     ...state,
-    shapes: state.shapes.filter(shape => !shape.isSelected)
+    shapes: filter(state.shapes, shape => !shape.isSelected)
   }
 }

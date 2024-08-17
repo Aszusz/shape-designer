@@ -11,12 +11,6 @@ const TopBar = () => {
 
   return (
     <div className='col-span-3 border-b border-gray-200 flex flex-row items-center p-2 gap-4'>
-      <input
-        type='file'
-        id='fileInput'
-        style={{ display: 'none' }}
-        onChange={() => {}}
-      />
       <AppMenu />
       <span>Shape Drawer</span>
       <div className='mx-6' /> {/* Spacer for group separation */}

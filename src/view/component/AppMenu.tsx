@@ -7,8 +7,9 @@ import {
   DropdownMenuTrigger
 } from '../ui/dropdown-menu'
 import { ClassNameProps } from '@/lib/cn'
-import { narrowToPersistentState } from '@/model/core'
+import { narrowToPersistentState, PersistentState } from '@/model/core'
 import { getFullState } from '@/shell/store'
+import { useStore } from '@/shell/store'
 
 function MenuIcon(props: ClassNameProps) {
   return (
@@ -75,8 +76,9 @@ function UploadIcon(props: ClassNameProps) {
 
 const AppMenu = () => {
   const downloadFile = useFileDownload()
+  const load = useStore().load
 
-  const handleSaveClick = () => {
+  const handleSave = () => {
     const fullState = getFullState()
     const persistentState = narrowToPersistentState(fullState)
     const content = JSON.stringify(persistentState, null, 2)
@@ -87,31 +89,54 @@ const AppMenu = () => {
     })
   }
 
+  const handleLoad = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
+    if (file) {
+      const reader = new FileReader()
+      reader.onload = e => {
+        const content = e.target?.result
+        if (typeof content === 'string') {
+          const state: PersistentState = JSON.parse(content)
+          load(state)
+        }
+      }
+      reader.readAsText(file)
+    }
+  }
+
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button
-          variant='ghost'
-          size='icon'
-          className='rounded-full focus-visible:ring-0 focus-visible:ring-offset-0'
-        >
-          <MenuIcon className='h-6 w-6' />
-          <span className='sr-only'>Toggle menu</span>
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align='end' className='w-48'>
-        <DropdownMenuItem onClick={handleSaveClick}>
-          <SaveIcon className='mr-2 h-4 w-4' />
-          Save to File
-        </DropdownMenuItem>
-        <DropdownMenuItem
-          onClick={() => document.getElementById('fileInput')?.click()}
-        >
-          <UploadIcon className='mr-2 h-4 w-4' />
-          Load from File
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <>
+      <input
+        type='file'
+        id='fileInput'
+        style={{ display: 'none' }}
+        onChange={handleLoad}
+      />
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button
+            variant='ghost'
+            size='icon'
+            className='rounded-full focus-visible:ring-0 focus-visible:ring-offset-0'
+          >
+            <MenuIcon className='h-6 w-6' />
+            <span className='sr-only'>Toggle menu</span>
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align='end' className='w-48'>
+          <DropdownMenuItem onClick={handleSave}>
+            <SaveIcon className='mr-2 h-4 w-4' />
+            Save to File
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={() => document.getElementById('fileInput')?.click()}
+          >
+            <UploadIcon className='mr-2 h-4 w-4' />
+            Load from File
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </>
   )
 }
 

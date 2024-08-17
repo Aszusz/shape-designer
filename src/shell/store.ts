@@ -2,6 +2,8 @@ import * as core from '../model/core'
 import { Point, Size } from '../model/geometry'
 import { SelectionToolMode, ToolType } from '../model/tools'
 import { IStore } from './istore'
+import { getOrder } from '@/model/readonlyOrderedRecord'
+import * as record from '@/model/readonlyOrderedRecord'
 import { create } from 'zustand'
 import { devtools } from 'zustand/middleware'
 
@@ -13,8 +15,8 @@ export const useStore = create<IStore>()(
     // Computed selectors
     getCanvasBorderSize: () => core.getBorderSize(get()),
     getToolPreview: () => core.getPreview(get()),
-    getShapeIds: () => get().shapes.getOrder(),
-    getShape: (shapeId: string) => get().shapes.get(shapeId),
+    getShapeIds: () => getOrder(get().shapes),
+    getShape: (shapeId: string) => record.get(get().shapes, shapeId),
     getSelectedShapes: () => core.getSelectedShapes(get()),
 
     // Actions
@@ -83,6 +85,10 @@ export const useStore = create<IStore>()(
         undefined,
         'deleteSelectedShapes'
       )
+    },
+
+    load: (externalState: core.PersistentState) => {
+      set(state => ({ ...state, ...externalState }))
     }
   }))
 )
