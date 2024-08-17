@@ -1,4 +1,5 @@
 import { Button } from '../ui/button'
+import { ClassNameProps } from '@/lib/cn'
 import { useStore } from '@/shell/store'
 import {
   Tooltip,
@@ -69,10 +70,6 @@ const LeftSideBar = () => {
       </TooltipProvider>
     </div>
   )
-}
-
-type ClassNameProps = {
-  className?: string
 }
 
 function CircleIcon(props: ClassNameProps) {

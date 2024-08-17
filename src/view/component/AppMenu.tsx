@@ -6,14 +6,11 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger
 } from '../ui/dropdown-menu'
+import { ClassNameProps } from '@/lib/cn'
 import { narrowToPersistentState } from '@/model/core'
 import { getFullState } from '@/shell/store'
 
-type ClassProps = {
-  className?: string
-}
-
-function MenuIcon(props: ClassProps) {
+function MenuIcon(props: ClassNameProps) {
   return (
     <svg
       {...props}
@@ -34,7 +31,7 @@ function MenuIcon(props: ClassProps) {
   )
 }
 
-function SaveIcon(props: ClassProps) {
+function SaveIcon(props: ClassNameProps) {
   return (
     <svg
       {...props}
@@ -55,7 +52,7 @@ function SaveIcon(props: ClassProps) {
   )
 }
 
-function UploadIcon(props: ClassProps) {
+function UploadIcon(props: ClassNameProps) {
   return (
     <svg
       {...props}
