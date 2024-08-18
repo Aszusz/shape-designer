@@ -61,6 +61,7 @@ const TopBar = () => {
   const redo = useStore().redo
   const canUndo = true
   const canRedo = true
+  const historyCount = useStore(state => state.history.past.length)
 
   return (
     <div className='col-span-3 border-b border-gray-200 flex flex-row items-center p-2 gap-4'>
@@ -123,6 +124,7 @@ const TopBar = () => {
           <TooltipContent>Redo</TooltipContent>
         </Tooltip>
       </TooltipProvider>
+      <span>{historyCount}</span>
     </div>
   )
 }

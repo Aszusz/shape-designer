@@ -1,4 +1,5 @@
 import { combineState, PersistentState, splitState, State } from '@/model/core'
+import { shallow } from 'zustand/shallow'
 
 export interface History {
   past: PersistentState[]
@@ -12,13 +13,24 @@ export const createInitialHistory = (initialState: State): History => ({
   future: []
 })
 
-export const addToHistory = (state: History, newPresent: State): History => {
-  const { persistent: persistentState } = splitState(state.present)
+export const addToHistory = (history: History, newState: State): History => {
+  const oldPersistent = splitState(history.present).persistent
+  const newPersistent = splitState(newState).persistent
 
-  return {
-    past: [...state.past, persistentState],
-    present: newPresent,
-    future: [] // Clear future states when a new action is taken
+  // Check if the persistent state has changed using Zustand's shallow equality check
+  const persistentStateHasChanged = !shallow(oldPersistent, newPersistent)
+
+  if (persistentStateHasChanged) {
+    return {
+      past: [...history.past, history.present],
+      present: newState,
+      future: [] // Clear future states when a new action is taken
+    }
+  } else {
+    return {
+      ...history,
+      present: newState
+    }
   }
 }
 

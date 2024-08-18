@@ -1,3 +1,5 @@
+import { shallow } from 'zustand/shallow'
+
 export type ReadonlyOrderedRecord<T> = {
   data: Record<string, T>
   order: string[]
@@ -98,13 +100,20 @@ export function clear<T>(): ReadonlyOrderedRecord<T> {
 // Function to map over values and return a new ReadonlyOrderedRecord
 export function map<T, U>(
   record: ReadonlyOrderedRecord<T>,
-  callback: (value: T, key: string) => U
-): ReadonlyOrderedRecord<U> {
-  const newData: Record<string, U> = {}
-  record.order.forEach(key => {
-    newData[key] = callback(record.data[key], key)
-  })
-  return { data: newData, order: [...record.order] }
+  callback: (value: T, key: string) => T | U
+): ReadonlyOrderedRecord<T | U> {
+  let changed = false
+  const newData: Record<string, T | U> = {}
+
+  for (const key of record.order) {
+    const newValue = callback(record.data[key], key)
+    if (!shallow(newValue, record.data[key])) {
+      changed = true
+    }
+    newData[key] = newValue
+  }
+
+  return changed ? { data: newData, order: [...record.order] } : record
 }
 
 // Function to filter the record based on a predicate
