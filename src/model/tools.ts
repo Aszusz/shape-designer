@@ -1,4 +1,3 @@
-import { Shape, ShapeType } from './core'
 import { BoundingBox, isContained } from './geometry'
 import { ReadonlyOrderedRecord } from './readonlyOrderedRecord'
 import * as record from './readonlyOrderedRecord'
@@ -18,6 +17,24 @@ export type ToolType =
 
 export type SelectionToolMode = 'replace' | 'toggle'
 
+export const RectangleShape = 'rectangle_shape'
+export const EllipseShape = 'ellipse_shape'
+
+export type ShapeType = typeof RectangleShape | typeof EllipseShape
+
+export type ShapeColor = {
+  readonly color: string
+  readonly borderColor: string
+}
+
+export type Shape = {
+  readonly id: string
+  readonly type: ShapeType
+  readonly isSelected: boolean
+} & BoundingBox &
+  ShapeColor
+
+// Tool and Shape Functions
 export const handlePanTool = (
   shapes: ReadonlyOrderedRecord<Shape>
 ): ReadonlyOrderedRecord<Shape> => {

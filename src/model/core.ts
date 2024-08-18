@@ -1,5 +1,4 @@
 import {
-  BoundingBox,
   Point,
   Size,
   boundingBox,
@@ -17,33 +16,19 @@ import {
   values
 } from './readonlyOrderedRecord'
 import {
+  EllipseShape,
   EllipseTool,
   handlePanTool,
   handleSelectTool,
   handleShapeTool,
   PanTool,
+  RectangleShape,
   RectangleTool,
   SelectionToolMode,
   SelectTool,
+  Shape,
   ToolType
 } from './tools'
-
-export const RectangleShape = 'rectangle_shape'
-export const EllipseShape = 'ellipse_shape'
-
-export type ShapeType = typeof RectangleShape | typeof EllipseShape
-
-export type ShapeColor = {
-  readonly color: string
-  readonly borderColor: string
-}
-
-export type Shape = {
-  readonly id: string
-  readonly type: ShapeType
-  readonly isSelected: boolean
-} & BoundingBox &
-  ShapeColor
 
 export type PersistentState = {
   readonly canvasSize: Size
