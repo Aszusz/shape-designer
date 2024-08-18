@@ -11,7 +11,7 @@ import { useRef } from 'react'
 const Canvas = () => {
   const canvasRef = useRef(null)
 
-  const { width, height } = useStore(state => state.canvasSize)
+  const { width, height } = useStore(state => state.history.present.canvasSize)
   const shapeIds = useStore().getShapeIds()
   const { onMouseDown, onMouseMove, onMouseUp, deleteSelectedShapes } =
     useStore()

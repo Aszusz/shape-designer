@@ -9,7 +9,7 @@ import {
 } from '@/view/ui/tooltip'
 
 const LeftSideBar = () => {
-  const selectedTool = useStore(state => state.toolType)
+  const selectedTool = useStore(state => state.history.present.toolType)
   const setTool = useStore().setTool
 
   return (

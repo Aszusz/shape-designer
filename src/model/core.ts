@@ -44,10 +44,30 @@ export type VolatileState = {
 
 export type State = PersistentState & VolatileState
 
-const persistentKeys = ['canvasSize', 'shapes', 'snapToGridSetting'] as const
+export function splitState(state: State): {
+  persistent: PersistentState
+  volatile: VolatileState
+} {
+  const { canvasSize, shapes, snapToGridSetting, ...volatileState } = state
+  const persistentState: PersistentState = {
+    canvasSize,
+    shapes,
+    snapToGridSetting
+  }
+  return {
+    persistent: persistentState,
+    volatile: volatileState as VolatileState
+  }
+}
 
-export function narrowToPersistentState(state: State) {
-  return Object.fromEntries(persistentKeys.map(key => [key, state[key]]))
+export function combineState(
+  persistent: PersistentState,
+  volatile: VolatileState
+): State {
+  return {
+    ...persistent,
+    ...volatile
+  }
 }
 
 export const initialState: State = {

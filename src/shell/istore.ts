@@ -1,16 +1,12 @@
 import * as core from '@/model/core'
 import { BoundingBox, Point, Size } from '@/model/geometry'
-import { ReadonlyOrderedRecord } from '@/model/readonlyOrderedRecord'
+import { History } from '@/model/history'
 import { SelectionToolMode, ToolType } from '@/model/tools'
 import type { Shape } from '@/model/tools'
 
 export interface IStore {
-  // State
-  canvasSize: Size
-  toolType: ToolType
-  currentMousePosition: Point
-  snapToGridSetting: boolean
-  shapes: ReadonlyOrderedRecord<Shape>
+  // History State
+  history: History
 
   // Computed selectors
   getCanvasBorderSize: () => Size
@@ -31,4 +27,8 @@ export interface IStore {
   setSnapToGridSetting: (snapToGrid: boolean) => void
   deleteSelectedShapes: () => void
   load: (state: core.PersistentState) => void
+
+  // Undo/Redo Actions
+  undo: () => void
+  redo: () => void
 }

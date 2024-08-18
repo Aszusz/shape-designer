@@ -1,7 +1,7 @@
 import { useStore } from '@/shell/store'
 
 const ToolPreview = () => {
-  const toolType = useStore(state => state.toolType)
+  const toolType = useStore(state => state.history.present.toolType)
   const toolPreview = useStore().getToolPreview()
 
   if (!toolPreview) return null

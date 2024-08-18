@@ -4,8 +4,8 @@ import { useStore } from '@/shell/store'
 import { Checkbox } from '@/view/ui/checkbox'
 
 const TopBar = () => {
-  const { width, height } = useStore(state => state.canvasSize)
-  const snapToGrid = useStore(state => state.snapToGridSetting)
+  const { width, height } = useStore(state => state.history.present.canvasSize)
+  const snapToGrid = useStore(state => state.history.present.snapToGridSetting)
   const setCanvasSize = useStore().setCanvasSize
   const setSnapToGridSetting = useStore().setSnapToGridSetting
 

@@ -7,7 +7,7 @@ import {
   DropdownMenuTrigger
 } from '../ui/dropdown-menu'
 import { ClassNameProps } from '@/lib/cn'
-import { narrowToPersistentState, PersistentState } from '@/model/core'
+import { PersistentState, splitState } from '@/model/core'
 import { getFullState } from '@/shell/store'
 import { useStore } from '@/shell/store'
 
@@ -79,8 +79,8 @@ const AppMenu = () => {
   const load = useStore().load
 
   const handleSave = () => {
-    const fullState = getFullState()
-    const persistentState = narrowToPersistentState(fullState)
+    const fullState = getFullState().history.present
+    const persistentState = splitState(fullState)['persistent']
     const content = JSON.stringify(persistentState, null, 2)
     downloadFile({
       content,
