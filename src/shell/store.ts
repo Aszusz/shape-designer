@@ -1,9 +1,8 @@
-import * as core from '../model/core'
-import { Point, Size } from '../model/geometry'
-import { SelectionToolMode, ToolType } from '../model/tools'
-import { IStore } from './istore'
-import { getOrder } from '@/model/readonlyOrderedRecord'
+import * as core from '@/model/core'
+import { Point, Size } from '@/model/geometry'
 import * as record from '@/model/readonlyOrderedRecord'
+import { SelectionToolMode, ToolType, Shape } from '@/model/tools'
+import { IStore } from '@/shell/istore'
 import { create } from 'zustand'
 import { devtools } from 'zustand/middleware'
 
@@ -15,7 +14,7 @@ export const useStore = create<IStore>()(
     // Computed selectors
     getCanvasBorderSize: () => core.getBorderSize(get()),
     getToolPreview: () => core.getPreview(get()),
-    getShapeIds: () => getOrder(get().shapes),
+    getShapeIds: () => record.getOrder(get().shapes),
     getShape: (shapeId: string) => record.get(get().shapes, shapeId),
     getSelectedShapes: () => core.getSelectedShapes(get()),
 
@@ -63,7 +62,7 @@ export const useStore = create<IStore>()(
       )
     },
 
-    updateShape: (shape: core.Shape) => {
+    updateShape: (shape: Shape) => {
       set(
         state => ({ ...core.updateShape(state, shape) }),
         undefined,

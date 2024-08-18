@@ -1,6 +1,3 @@
-import { Button } from '../ui/button'
-import { Input } from '../ui/input'
-import { Label } from '../ui/label'
 import {
   Select,
   SelectContent,
@@ -8,8 +5,11 @@ import {
   SelectTrigger,
   SelectValue
 } from '../ui/select'
-import { Shape, ShapeColor } from '@/model/core'
+import { Shape, ShapeColor } from '@/model/tools'
 import { useStore } from '@/shell/store'
+import { Button } from '@/view/ui/button'
+import { Input } from '@/view/ui/input'
+import { Label } from '@/view/ui/label'
 import React from 'react'
 
 const ShapeProperties: React.FC = () => {

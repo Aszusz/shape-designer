@@ -1,4 +1,4 @@
-import { Shape } from '@/model/core'
+import { Shape } from '@/model/tools'
 import { useStore } from '@/shell/store'
 import React, { useCallback, useRef } from 'react'
 

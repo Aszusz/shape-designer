@@ -1,8 +1,8 @@
-import * as core from '../model/core'
-import type { Shape } from '../model/core'
-import { BoundingBox, Point, Size } from '../model/geometry'
-import { ReadonlyOrderedRecord } from '../model/readonlyOrderedRecord'
-import { SelectionToolMode, ToolType } from '../model/tools'
+import * as core from '@/model/core'
+import { BoundingBox, Point, Size } from '@/model/geometry'
+import { ReadonlyOrderedRecord } from '@/model/readonlyOrderedRecord'
+import { SelectionToolMode, ToolType } from '@/model/tools'
+import type { Shape } from '@/model/tools'
 
 export interface IStore {
   // State
@@ -27,7 +27,7 @@ export interface IStore {
   onMouseUp: (mode: SelectionToolMode) => void
   selectShape: (shapeId: string) => void
   toggleSelected: (shapeId: string) => void
-  updateShape: (shape: core.Shape) => void
+  updateShape: (shape: Shape) => void
   setSnapToGridSetting: (snapToGrid: boolean) => void
   deleteSelectedShapes: () => void
   load: (state: core.PersistentState) => void
