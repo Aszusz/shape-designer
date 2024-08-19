@@ -21,13 +21,12 @@ export const useStore = create<IStore>()((set, get) => ({
   copySelectedShapes: () => {
     const selectedShapes = get().getSelectedShapes()
     if (selectedShapes.length > 0) {
-      const serializedShapes = core.serializeShapes(selectedShapes)
+      clipboardManager.copy(selectedShapes)
       set(state => {
         const deselectedShapes = core.deselectAllShapes(
           state.history.present.shapes
         )
         return {
-          clipboard: { serializedShapes },
           history: addToHistory(state.history, {
             ...state.history.present,
             shapes: deselectedShapes
@@ -38,17 +37,17 @@ export const useStore = create<IStore>()((set, get) => ({
   },
 
   pasteShapes: () => {
-    const { clipboard, history } = get()
-    if (clipboard) {
+    const pastedShapes = clipboardManager.paste()
+    if (pastedShapes) {
       set(state => {
         const { updatedShapes, newShapeIds } = core.pasteShapes(
-          clipboard.serializedShapes,
+          pastedShapes,
           state.history.present.shapes
         )
 
-        // Deselect all shapes and then select only the newly pasted shapes
+        // Select only the newly pasted shapes
         const shapesWithSelection = core.selectShapes(
-          core.deselectAllShapes(updatedShapes),
+          updatedShapes,
           newShapeIds
         )
 

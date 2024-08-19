@@ -244,7 +244,7 @@ export const getSelectedShapes = (state: State): Shape[] => {
 }
 
 export const updateShape = (state: State, shape: Shape): State => {
-  return { ...state, shapes: set(state.shapes, shape.id, shape) }
+  return { ...state, shapes: setRecord(state.shapes, shape.id, shape) }
 }
 
 export const setSnapToGridSetting = (
@@ -293,17 +293,17 @@ export function deserializeShapes(serialized: string): Shape[] {
 export function copyShapes(shapes: Shape[]): string {
   return serializeShapes(shapes)
 }
+
 export function pasteShapes(
-  serializedShapes: string,
+  shapesToPaste: Shape[],
   existingShapes: ReadonlyOrderedRecord<Shape>
 ): {
   updatedShapes: ReadonlyOrderedRecord<Shape>
   newShapeIds: string[]
 } {
-  const newShapes = deserializeShapes(serializedShapes)
   const newShapeIds: string[] = []
 
-  const updatedShapes = newShapes.reduce((shapes, shape) => {
+  const updatedShapes = shapesToPaste.reduce((shapes, shape) => {
     const newId = generateId()
     newShapeIds.push(newId)
     const newShape = {
