@@ -1,3 +1,4 @@
+import { clipboardManager } from '@/model/clipboardManager'
 import * as core from '@/model/core'
 import { Point, Size } from '@/model/geometry'
 import {
@@ -16,6 +17,51 @@ const initialState = core.initialState
 export const useStore = create<IStore>()((set, get) => ({
   // History State
   history: createInitialHistory(initialState),
+  clipboard: null,
+  copySelectedShapes: () => {
+    const selectedShapes = get().getSelectedShapes()
+    if (selectedShapes.length > 0) {
+      clipboardManager.copy(selectedShapes)
+      set(state => {
+        const deselectedShapes = core.deselectAllShapes(
+          state.history.present.shapes
+        )
+        return {
+          history: addToHistory(state.history, {
+            ...state.history.present,
+            shapes: deselectedShapes
+          })
+        }
+      })
+    }
+  },
+
+  pasteShapes: () => {
+    const pastedShapes = clipboardManager.paste()
+    if (pastedShapes) {
+      set(state => {
+        const { updatedShapes, newShapeIds } = core.pasteShapes(
+          pastedShapes,
+          state.history.present.shapes
+        )
+
+        // Select only the newly pasted shapes
+        const shapesWithSelection = core.selectShapes(
+          updatedShapes,
+          newShapeIds
+        )
+
+        const newPresent = {
+          ...state.history.present,
+          shapes: shapesWithSelection
+        }
+
+        return {
+          history: addToHistory(state.history, newPresent)
+        }
+      })
+    }
+  },
 
   // Computed selectors
   getCanvasBorderSize: () => core.getBorderSize(get().history.present),

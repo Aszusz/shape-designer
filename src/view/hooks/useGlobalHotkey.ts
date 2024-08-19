@@ -1,4 +1,4 @@
-import useEventListener from './useEventListener'
+import { useEffect } from 'react'
 
 type Key =
   | 'Backspace'
@@ -81,6 +81,8 @@ type KeyCombination = {
   meta?: boolean // Command key on Mac or Windows key on Windows
 }
 
+let registeredHotkeys = new Map<string, (event: KeyboardEvent) => void>()
+
 export default function useGlobalHotkey(
   keyCombination: KeyCombination,
   callback: () => void
@@ -93,18 +95,36 @@ export default function useGlobalHotkey(
     meta = false
   } = keyCombination
 
-  const handleKeyDown = (event: KeyboardEvent) => {
-    if (
-      event.key === key &&
-      event.ctrlKey === ctrl &&
-      event.altKey === alt &&
-      event.shiftKey === shift &&
-      event.metaKey === meta
-    ) {
-      event.preventDefault() // prevent default action for the key combination
-      callback()
-    }
-  }
+  const hotkeyId = `${key}-${ctrl}-${alt}-${shift}-${meta}`
 
-  useEventListener('keydown', handleKeyDown, document)
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (
+        event.key === key &&
+        event.ctrlKey === ctrl &&
+        event.altKey === alt &&
+        event.shiftKey === shift &&
+        event.metaKey === meta
+      ) {
+        event.preventDefault() // prevent default action for the key combination
+        callback()
+      }
+    }
+
+    // If there's already a listener for this hotkey, remove it
+    if (registeredHotkeys.has(hotkeyId)) {
+      const oldCallback = registeredHotkeys.get(hotkeyId)!
+      document.removeEventListener('keydown', oldCallback)
+    }
+
+    // Register the new hotkey listener
+    registeredHotkeys.set(hotkeyId, handleKeyDown)
+    document.addEventListener('keydown', handleKeyDown)
+
+    // Cleanup on unmount
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown)
+      registeredHotkeys.delete(hotkeyId)
+    }
+  }, [key, ctrl, alt, shift, meta, callback, hotkeyId])
 }
