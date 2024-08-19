@@ -1,3 +1,5 @@
+import { createCopyAction, createPasteAction } from '@/model/actions'
+import { clipboardManager } from '@/model/clipboardManager'
 import * as core from '@/model/core'
 import { Point, Size } from '@/model/geometry'
 import {
@@ -16,6 +18,30 @@ const initialState = core.initialState
 export const useStore = create<IStore>()((set, get) => ({
   // History State
   history: createInitialHistory(initialState),
+  clipboard: null,
+  copySelectedShapes: () => {
+    const selectedShapes = get().getSelectedShapes()
+    const serializedShapes = core.serializeShapes(selectedShapes)
+    set({ clipboard: { serializedShapes } })
+  },
+  pasteShapes: () => {
+    const { clipboard, history } = get()
+    if (clipboard) {
+      set(state => {
+        const updatedShapes = core.pasteShapes(
+          clipboard.serializedShapes,
+          state.history.present.shapes
+        )
+        const newPresent = {
+          ...state.history.present,
+          shapes: updatedShapes
+        }
+        return {
+          history: addToHistory(state.history, newPresent)
+        }
+      })
+    }
+  },
 
   // Computed selectors
   getCanvasBorderSize: () => core.getBorderSize(get().history.present),

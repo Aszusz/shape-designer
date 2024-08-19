@@ -12,7 +12,7 @@ import {
   filter,
   map,
   ReadonlyOrderedRecord,
-  set,
+  set as setRecord,
   values
 } from './readonlyOrderedRecord'
 import {
@@ -27,8 +27,14 @@ import {
   SelectionToolMode,
   SelectTool,
   Shape,
-  ToolType
+  ToolType,
+  ShapeType
 } from './tools'
+import { nanoid } from 'nanoid'
+
+export function generateId(): string {
+  return nanoid()
+}
 
 export type PersistentState = {
   readonly canvasSize: Size
@@ -253,4 +259,53 @@ export const deleteSelectedShapes = (state: State): State => {
     ...state,
     shapes: filter(state.shapes, shape => !shape.isSelected)
   }
+}
+
+export function serializeShapes(shapes: Shape[]): string {
+  return JSON.stringify(shapes)
+}
+export function deserializeShapes(serialized: string): Shape[] {
+  const parsed = JSON.parse(serialized)
+  return parsed.map((shape: any) => {
+    // Ensure each shape has a valid ID
+    const id = shape.id || generateId()
+
+    // Validate shape type
+    const type: ShapeType =
+      shape.type === RectangleShape || shape.type === EllipseShape
+        ? shape.type
+        : RectangleShape // Default to rectangle if type is invalid
+
+    // Reconstruct the shape with validated properties
+    return {
+      id,
+      type,
+      x: Number(shape.x) || 0,
+      y: Number(shape.y) || 0,
+      width: Number(shape.width) || 0,
+      height: Number(shape.height) || 0,
+      color: shape.color || '#ffffff',
+      borderColor: shape.borderColor || '#000000',
+      isSelected: Boolean(shape.isSelected)
+    }
+  })
+}
+export function copyShapes(shapes: Shape[]): string {
+  return serializeShapes(shapes)
+}
+export function pasteShapes(
+  serializedShapes: string,
+  existingShapes: ReadonlyOrderedRecord<Shape>
+): ReadonlyOrderedRecord<Shape> {
+  const newShapes = deserializeShapes(serializedShapes)
+  return newShapes.reduce((shapes, shape) => {
+    const newShape = {
+      ...shape,
+      id: generateId(),
+      x: shape.x + 10,
+      y: shape.y + 10,
+      isSelected: true
+    }
+    return setRecord(shapes, newShape.id, newShape)
+  }, existingShapes)
 }

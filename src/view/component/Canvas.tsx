@@ -1,3 +1,4 @@
+import { useCopyPaste } from '../hooks/useCopyPaste'
 import useGlobalHotkey from '../hooks/useGlobalHotkey'
 import useRelativeMouseDown from '../hooks/useRelativeMouseDown'
 import useRelativeMouseMove from '../hooks/useRelativeMouseMove'
@@ -10,6 +11,8 @@ import { useRef } from 'react'
 
 const Canvas = () => {
   const canvasRef = useRef(null)
+
+  const { handleCopy, handlePaste } = useCopyPaste()
 
   const { width, height } = useStore(state => state.history.present.canvasSize)
   const shapeIds = useStore().getShapeIds()
@@ -31,6 +34,9 @@ const Canvas = () => {
   useGlobalHotkey({ key: 'Delete' }, () => {
     deleteSelectedShapes()
   })
+
+  useGlobalHotkey({ key: 'c', ctrl: true }, handleCopy)
+  useGlobalHotkey({ key: 'v', ctrl: true }, handlePaste)
 
   return (
     <svg
