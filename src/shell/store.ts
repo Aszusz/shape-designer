@@ -1,4 +1,3 @@
-import { createCopyAction, createPasteAction } from '@/model/actions'
 import { clipboardManager } from '@/model/clipboardManager'
 import * as core from '@/model/core'
 import { Point, Size } from '@/model/geometry'
@@ -21,21 +20,43 @@ export const useStore = create<IStore>()((set, get) => ({
   clipboard: null,
   copySelectedShapes: () => {
     const selectedShapes = get().getSelectedShapes()
-    const serializedShapes = core.serializeShapes(selectedShapes)
-    set({ clipboard: { serializedShapes } })
+    if (selectedShapes.length > 0) {
+      const serializedShapes = core.serializeShapes(selectedShapes)
+      set(state => {
+        const deselectedShapes = core.deselectAllShapes(
+          state.history.present.shapes
+        )
+        return {
+          clipboard: { serializedShapes },
+          history: addToHistory(state.history, {
+            ...state.history.present,
+            shapes: deselectedShapes
+          })
+        }
+      })
+    }
   },
+
   pasteShapes: () => {
     const { clipboard, history } = get()
     if (clipboard) {
       set(state => {
-        const updatedShapes = core.pasteShapes(
+        const { updatedShapes, newShapeIds } = core.pasteShapes(
           clipboard.serializedShapes,
           state.history.present.shapes
         )
+
+        // Deselect all shapes and then select only the newly pasted shapes
+        const shapesWithSelection = core.selectShapes(
+          core.deselectAllShapes(updatedShapes),
+          newShapeIds
+        )
+
         const newPresent = {
           ...state.history.present,
-          shapes: updatedShapes
+          shapes: shapesWithSelection
         }
+
         return {
           history: addToHistory(state.history, newPresent)
         }

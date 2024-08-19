@@ -296,16 +296,43 @@ export function copyShapes(shapes: Shape[]): string {
 export function pasteShapes(
   serializedShapes: string,
   existingShapes: ReadonlyOrderedRecord<Shape>
-): ReadonlyOrderedRecord<Shape> {
+): {
+  updatedShapes: ReadonlyOrderedRecord<Shape>
+  newShapeIds: string[]
+} {
   const newShapes = deserializeShapes(serializedShapes)
-  return newShapes.reduce((shapes, shape) => {
+  const newShapeIds: string[] = []
+
+  const updatedShapes = newShapes.reduce((shapes, shape) => {
+    const newId = generateId()
+    newShapeIds.push(newId)
     const newShape = {
       ...shape,
-      id: generateId(),
+      id: newId,
       x: shape.x + 10,
       y: shape.y + 10,
-      isSelected: true
+      isSelected: false // We'll handle selection separately
     }
     return setRecord(shapes, newShape.id, newShape)
   }, existingShapes)
+
+  return { updatedShapes, newShapeIds }
+}
+export function selectShapes(
+  shapes: ReadonlyOrderedRecord<Shape>,
+  shapeIds: string[]
+): ReadonlyOrderedRecord<Shape> {
+  return shapeIds.reduce((updatedShapes, id) => {
+    const shape = updatedShapes.data[id]
+    if (shape) {
+      return setRecord(updatedShapes, id, { ...shape, isSelected: true })
+    }
+    return updatedShapes
+  }, shapes)
+}
+
+export function deselectAllShapes(
+  shapes: ReadonlyOrderedRecord<Shape>
+): ReadonlyOrderedRecord<Shape> {
+  return map(shapes, shape => ({ ...shape, isSelected: false }))
 }
