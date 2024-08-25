@@ -9,7 +9,10 @@ import React from 'react'
 
 const RightSideBar: React.FC = () => {
   return (
-    <ResizablePanelGroup direction='vertical'>
+    <ResizablePanelGroup
+      direction='vertical'
+      className='border-l border-gray-200'
+    >
       <ResizablePanel className='p-4'>
         <ShapeList />
       </ResizablePanel>
