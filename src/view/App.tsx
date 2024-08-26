@@ -1,4 +1,4 @@
-import CanvasWrapper from './component/CanvasWrapper'
+import CanvasWithWrapper from './component/CanvasWithWrapper'
 import LeftSideBar from './component/LeftSideBar'
 import RightSideBar from './component/RightSideBar'
 import StatusBar from './component/StatusBar'
@@ -9,7 +9,7 @@ function App() {
     <div className='grid h-screen grid-cols-[auto_1fr_300px] grid-rows-[50px_1fr_30px] bg-gray-50 text-gray-400 select-none'>
       <TopBar />
       <LeftSideBar />
-      <CanvasWrapper />
+      <CanvasWithWrapper />
       <RightSideBar />
       <StatusBar />
     </div>
