@@ -3,7 +3,7 @@ import { useEffect, useRef } from 'react'
 
 function useRelativeMouseDown(
   callback: (x: number, y: number, event: MouseEvent) => void,
-  element: HTMLElement | null
+  element: HTMLElement | SVGSVGElement | null
 ) {
   const callbackRef = useRef(callback)
 
