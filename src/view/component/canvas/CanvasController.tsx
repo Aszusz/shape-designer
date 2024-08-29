@@ -13,15 +13,15 @@ const CanvasController: FC = () => {
 
   useRelativeMouseUp((_x, _y, e) => {
     onMouseUp(e.ctrlKey ? 'toggle' : 'replace')
-  }, canvasRef.current)
+  }, canvasRef)
 
   useRelativeMouseDown((x, y) => {
     onMouseDown({ x: Math.round(x), y: Math.round(y) })
-  }, canvasRef.current)
+  }, canvasRef)
 
   useRelativeMouseMove((x, y) => {
     onMouseMove({ x: Math.round(x), y: Math.round(y) })
-  }, canvasRef.current)
+  }, canvasRef)
 
   useGlobalHotkey({ key: 'Delete' }, () => {
     deleteSelectedShapes()
