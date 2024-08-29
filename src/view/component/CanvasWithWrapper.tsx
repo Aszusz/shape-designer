@@ -11,14 +11,11 @@ const CanvasWithWrapper: React.FC = () => {
   const scrollRef = useRef<HTMLDivElement>(null)
   const canvasRef = useRef<SVGSVGElement>(null)
   const { width: borderWidth } = useStore().getCanvasBorderSize()
-  const { width: canvasWidth, height: canvasHeight } = useStore(
-    state => state.history.present.canvasSize
-  )
 
   return (
     <CanvasScroll scrollRef={scrollRef}>
       <CanvasPadding borderWidth={borderWidth} scrollRef={scrollRef}>
-        <CanvasBorder canvasWidth={canvasWidth} canvasHeight={canvasHeight}>
+        <CanvasBorder>
           <CanvasRenderer canvasRef={canvasRef} />
           <CanvasController canvasRef={canvasRef} />
         </CanvasBorder>

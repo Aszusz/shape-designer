@@ -1,27 +1,26 @@
+import { useStore } from '@/shell/store'
 import { FC, ReactNode } from 'react'
 
 interface CanvasBorderProps {
   children: ReactNode
-  canvasWidth: number
-  canvasHeight: number
 }
 
-const CanvasBorder: FC<CanvasBorderProps> = ({
-  children,
-  canvasWidth,
-  canvasHeight
-}) => (
-  <svg
-    style={{
-      width: `${canvasWidth + 2}px`,
-      height: `${canvasHeight + 2}px`,
-      backgroundColor: '#d1d5db'
-    }}
-  >
-    {children}
-  </svg>
-)
+export const CANVAS_BORDER_THICKNESS = 1.0
 
-CanvasBorder.displayName = 'CanvasBorder'
+const CanvasBorder: FC<CanvasBorderProps> = ({ children }) => {
+  const size = useStore(state => state.history.present.canvasSize)
+
+  return (
+    <svg
+      style={{
+        width: `${size.width + 2 * CANVAS_BORDER_THICKNESS}px`,
+        height: `${size.height + 2 * CANVAS_BORDER_THICKNESS}px`,
+        backgroundColor: '#d1d5db'
+      }}
+    >
+      {children}
+    </svg>
+  )
+}
 
 export default CanvasBorder
