@@ -1,15 +1,15 @@
-import CanvasWithWrapper from './component/CanvasWithWrapper'
-import LeftSideBar from './component/LeftSideBar'
-import RightSideBar from './component/RightSideBar'
-import StatusBar from './component/StatusBar'
-import TopBar from './component/TopBar'
+import LeftSideBar from '@/view/component/LeftSideBar'
+import RightSideBar from '@/view/component/RightSideBar'
+import StatusBar from '@/view/component/StatusBar'
+import TopBar from '@/view/component/TopBar'
+import Canvas from '@/view/component/canvas/Canvas'
 
 function App() {
   return (
     <div className='grid h-screen grid-cols-[auto_1fr_300px] grid-rows-[50px_1fr_30px] bg-gray-50 text-gray-400 select-none'>
       <TopBar />
       <LeftSideBar />
-      <CanvasWithWrapper />
+      <Canvas />
       <RightSideBar />
       <StatusBar />
     </div>

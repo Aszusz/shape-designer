@@ -1,15 +1,13 @@
 // CanvasRenderer.tsx
-import Grid from '../Grid'
 import Shape from '../Shape'
 import ToolPreview from '../ToolPreview'
+import Grid from './Grid'
 import { useStore } from '@/shell/store'
-import { FC, RefObject } from 'react'
+import { FC } from 'react'
 
-interface CanvasRendererProps {
-  canvasRef: RefObject<SVGSVGElement>
-}
+interface CanvasRendererProps {}
 
-const CanvasRenderer: FC<CanvasRendererProps> = ({ canvasRef }) => {
+const CanvasRenderer: FC<CanvasRendererProps> = () => {
   const shapeIds = useStore().getShapeIds()
   const { width: canvasWidth, height: canvasHeight } = useStore(
     state => state.history.present.canvasSize
@@ -17,7 +15,6 @@ const CanvasRenderer: FC<CanvasRendererProps> = ({ canvasRef }) => {
 
   return (
     <svg
-      ref={canvasRef}
       overflow='visible'
       x={1}
       y={1}

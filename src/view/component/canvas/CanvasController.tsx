@@ -3,13 +3,11 @@ import useGlobalHotkey from '@/view/hooks/useGlobalHotkey'
 import useRelativeMouseDown from '@/view/hooks/useRelativeMouseDown'
 import useRelativeMouseMove from '@/view/hooks/useRelativeMouseMove'
 import useRelativeMouseUp from '@/view/hooks/useRelativeMouseUp'
-import { FC, RefObject } from 'react'
+import { FC, useRef } from 'react'
 
-interface CanvasControllerProps {
-  canvasRef: RefObject<SVGSVGElement>
-}
+const CanvasController: FC = () => {
+  const canvasRef = useRef<SVGSVGElement>(null)
 
-const CanvasController: FC<CanvasControllerProps> = ({ canvasRef }) => {
   const { onMouseDown, onMouseMove, onMouseUp, deleteSelectedShapes } =
     useStore()
 
@@ -29,7 +27,7 @@ const CanvasController: FC<CanvasControllerProps> = ({ canvasRef }) => {
     deleteSelectedShapes()
   })
 
-  return null // This component only controls behavior, no visual output.
+  return <g ref={canvasRef}></g>
 }
 
 export default CanvasController
