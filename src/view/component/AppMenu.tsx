@@ -10,6 +10,7 @@ import { ClassNameProps } from '@/lib/cn'
 import { PersistentState, splitState } from '@/model/core'
 import { getFullState } from '@/shell/store'
 import { useStore } from '@/shell/store'
+import { useRef } from 'react'
 
 function MenuIcon(props: ClassNameProps) {
   return (
@@ -75,6 +76,8 @@ function UploadIcon(props: ClassNameProps) {
 }
 
 const AppMenu = () => {
+  const fileInputRef = useRef<HTMLInputElement>(null)
+
   const downloadFile = useFileDownload()
   const load = useStore().load
 
@@ -108,7 +111,7 @@ const AppMenu = () => {
     <>
       <input
         type='file'
-        id='fileInput'
+        ref={fileInputRef}
         style={{ display: 'none' }}
         onChange={handleLoad}
       />
@@ -128,9 +131,7 @@ const AppMenu = () => {
             <SaveIcon className='mr-2 h-4 w-4' />
             Save to File
           </DropdownMenuItem>
-          <DropdownMenuItem
-            onClick={() => document.getElementById('fileInput')?.click()}
-          >
+          <DropdownMenuItem onClick={() => fileInputRef.current?.click()}>
             <UploadIcon className='mr-2 h-4 w-4' />
             Load from File
           </DropdownMenuItem>
