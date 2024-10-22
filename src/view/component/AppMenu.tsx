@@ -111,6 +111,7 @@ const AppMenu = () => {
     <>
       <input
         type='file'
+        accept='.json'
         ref={fileInputRef}
         style={{ display: 'none' }}
         onChange={handleLoad}
